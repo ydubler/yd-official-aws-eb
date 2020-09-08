@@ -1,0 +1,19 @@
+{
+  "name": "yuri-dubler-official",
+  "version": "1.0.0",
+  "description": "My official homepage featuring my resume and portfolio.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ydubler/yuri-dubler-official.git"
+  },
+  "author": "Yuri Dubler",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ydubler/yuri-dubler-official/issues"
+  },
+  "homepage": "https://github.com/ydubler/yuri-dubler-official#readme"
+}

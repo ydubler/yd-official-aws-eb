@@ -12,7 +12,7 @@ module.exports = function (api) {
           safari: "11.1",
         },
         useBuiltIns: "usage",
-        corejs: 3,
+        corejs: "3.6.4",
       },
     ],
   ];

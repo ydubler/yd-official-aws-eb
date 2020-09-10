@@ -8,19 +8,67 @@
     <meta name="author" content="Yuri Dubler" />
     <meta name="description" content="Yuri Dubler Official" />
     <link rel="stylesheet" type="text/css" href="../public/css/style.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
-
-    <div id="view-one"> 
-      {{ appName }}
+    <div
+      id="view-one"
+      class="block color-1e shortest-paths"
+      v-bind:style="{ height: screenHeight+'px'}"
+    >
+      <div class="shortest-paths" v-bind:style="{ height: screenHeight+'px'}">
+        <div class="navbar">
+          <div class="navbar-link inline-block">
+            <button v-on:click="createShortestPath">CLICKC</button>Resume
+          </div>
+          <div class="navbar-link inline-block">Portfolio</div>
+          <div class="navbar-link inline-block">Sidearms</div>
+        </div>
+        <svg
+          version="1.1"
+          baseProfile="full"
+          v-bind:style="{ height: screenHeight+'px'}"
+          xmlns="http://www.w3.org/2000/svg"
+          width="100%"
+        >
+          <!-- <g transform="scale(0.5) translate(100 100)"> -->
+          <g>
+            <g v-for="point in points" v-bind:key="Math.random()">
+              <circle :cx="point.x" :cy="point.y" r="7" fill="#060606" />
+              <text :x="point.x" :y="point.y" fontSize="40px">
+                <!-- id:{{point.id}} / row:{{point.row}} / i:{{point.index}} -->
+                {{point.id}}
+              </text>
+            </g>
+            <line
+              v-for="line in lines"
+              :x1="line.x1"
+              :y1="line.y1"
+              :x2="line.x2"
+              :y2="line.y2"
+              stroke="#060606"
+            />
+            <line
+              v-for="path in pathLines"
+              :x1="path.x1"
+              :y1="path.y1"
+              :x2="path.x2"
+              :y2="path.y2"
+              stroke="orangered"
+            />
+          </g>
+        </svg>
+      </div>
     </div>
 
-    <script
-      type = "text/javascript"
-      src = "https://unpkg.com/vue"></script>
-    </script>
+    <!-- <div id="view-two">
+      {{ appName }}
+    </div> -->
+
+    <script type="text/javascript" src="https://unpkg.com/vue"></script>
     <script type="text/javascript" src="../dist/main.js"></script>
-  </script>
   </body>
 </html>

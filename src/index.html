@@ -9,7 +9,7 @@
     <meta name="description" content="Yuri Dubler Official" />
     <link rel="stylesheet" type="text/css" href="../public/css/style.css" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Poppins&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Lato&family=Poppins&display=swap"
       rel="stylesheet"
     />
   </head>
@@ -26,7 +26,7 @@
         <div class="navbar-link inline-block">Portfolio</div>
         <div class="navbar-link inline-block">Sidearms</div>
       </div>
-      <div class="intro-text">
+      <div class="intro-text font-Lato">
         Software Engineer.<br />Web Developer.<br />Yuri Dubler.
       </div>
       <div class="shortest-paths" v-bind:style="{ height: screenHeight+'px'}">
@@ -43,6 +43,12 @@
             :fill="triangle.color"
             @mouseenter="mouseEnterTriangle(triangle.point1, triangle.id)"
             @mouseleave="mouseLeaveTriangle(triangle.id)"
+          ></polygon>
+          <polygon
+            v-if="mouseOnTriangle===true"
+            :points="mouseTrianglePoints"
+            fill="#1b2a3a"
+            pointer-events="none"
           ></polygon>
 
           <line

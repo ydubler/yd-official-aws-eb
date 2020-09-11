@@ -292,6 +292,8 @@ var view1 = new Vue({
     screenHeight: "100%",
     screenWidth: "100%",
     pointToggle: true,
+    mouseOnTriangle: false,
+    mouseTrianglePoints: "",
     pathEater: {
       moving: false,
       adjacent: false,
@@ -588,11 +590,11 @@ var view1 = new Vue({
         ) {
           let color =
             "rgb(" +
-            (((90 - 30) / this.numRows) * row + 30) +
+            (((40 - 30) / this.numRows) * row + 30) +
             "," +
-            (((100 - 30) / this.numRows) * row + 30) +
+            (((40 - 30) / this.numRows) * row + 30) +
             "," +
-            (((110 - 30) / this.numRows) * row + 30) +
+            (((40 - 30) / this.numRows) * row + 30) +
             ")";
 
           triangles.push({
@@ -620,11 +622,11 @@ var view1 = new Vue({
         if (this.getRow(right, longRow) === row && downTwo < numPoints) {
           let color =
             "rgb(" +
-            (((90 - 30) / this.numRows) * row + 30) +
+            (((40 - 30) / this.numRows) * row + 30) +
             "," +
-            (((100 - 30) / this.numRows) * row + 30) +
+            (((40 - 30) / this.numRows) * row + 30) +
             "," +
-            (((110 - 30) / this.numRows) * row + 30) +
+            (((40 - 30) / this.numRows) * row + 30) +
             ")";
           triangles.push({
             id: curTriangle++,
@@ -705,12 +707,26 @@ var view1 = new Vue({
         this.pathEater.to = point3;
       }
 
-      this.triangles[triangle].color = "#1b2a3a";
+      this.mouseOnTriangle = true;
+      this.mouseTrianglePoints =
+        this.points[point1].x +
+        "," +
+        this.points[point1].y +
+        " " +
+        this.points[point2].x +
+        "," +
+        this.points[point2].y +
+        " " +
+        this.points[point3].x +
+        "," +
+        this.points[point3].y;
+
+      //this.triangles[triangle].color = "#1b2a3a";
 
       this.createShortestPathsTree();
     },
     mouseLeaveTriangle: function(triangle) {
-      this.triangles[triangle].color = "#1e1e1e";
+      //this.triangles[triangle].color = "#1e1e1e";
     },
     initializePathEater: function() {
       console.log("initializePathEater()");

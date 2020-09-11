@@ -292,11 +292,21 @@ var view1 = new Vue({
     screenHeight: "100%",
     screenWidth: "100%",
     pointToggle: true,
+    pathEater: {
+      moving: false,
+      adjacent: false,
+      animate: false,
+      color: "orangered",
+      from: 40,
+      to: 41,
+      x: 300,
+      y: 300,
+    },
     sourceNode: 0,
     pointA: 0,
     pointB: 90,
-    longRow: 11, // Can be even or odd
-    numRows: 11, // MUST BE ODD
+    longRow: 13, // Can be even or odd
+    numRows: 13, // MUST BE ODD
     numPoints: -1,
     points: [
       { x: -20, y: -20 },
@@ -326,6 +336,11 @@ var view1 = new Vue({
     },
     getDistance: function(x1, y1, x2, y2) {
       return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+    },
+    getRandomIntInRange: function(min, max) {
+      min = Math.ceil(min);
+      max = Math.floor(max);
+      return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
     },
     createPoints: function(longRow, numRows) {
       console.log("createPoints( L = " + longRow + " , R = " + numRows + " )");
@@ -394,12 +409,14 @@ var view1 = new Vue({
           });
         }
       }
+
       this.numPoints = numPoints;
       this.points = points;
     },
     createLines: function(longRow, numRows) {
       console.log("createLines( L = " + longRow + " , R = " + numRows + " )");
-      const numPoints = this.points.length;
+      //const numPoints = this.points.length;
+      const numPoints = this.numPoints;
       console.log("\tnumPoints= " + numPoints);
 
       let lines = [];
@@ -539,24 +556,23 @@ var view1 = new Vue({
       }
 
       this.lines = lines;
-
-      //console.log(digraph);
     },
     createTriangles: function(longRow, numRows) {
       console.log(
         "createTriangles( L = " + longRow + " , R = " + numRows + " )"
       );
-      const numPoints =
-        (Math.floor(numRows / 2) + 1) * longRow +
-        Math.floor(numRows / 2) * (longRow - 1);
-      console.log("\tnumPoints= " + numPoints);
+      // const numPoints =
+      //   (Math.floor(numRows / 2) + 1) * longRow +
+      //   Math.floor(numRows / 2) * (longRow - 1);
+      // console.log("\tnumPoints= " + numPoints);
+      const numPoints = this.numPoints;
 
       let triangles = [];
 
       let curTriangle = 0;
       // iterate through every point
       for (let n = 0; n < this.numPoints; n++) {
-        console.log("n = " + n);
+        //console.log("n = " + n);
         let k = Math.floor(n / (2 * longRow - 1));
         let j = Math.floor((n - (2 * longRow - 1) * k) / longRow);
         let row = 2 * k + j;
@@ -570,18 +586,19 @@ var view1 = new Vue({
           downOne < numPoints &&
           downTwo < downTwo < numPoints
         ) {
-          console.log("down triangle created");
-          // triangles.push({
-          //   x1: this.points[n].x,
-          //   y1: this.points[n].y,
-          //   x2: this.points[downOne].x,
-          //   y2: this.points[downOne].y,
-          //   x3: this.points[downTwo].x,
-          //   y3: this.points[downTwo].y,
-          // });
+          let color =
+            "rgb(" +
+            (((90 - 30) / this.numRows) * row + 30) +
+            "," +
+            (((100 - 30) / this.numRows) * row + 30) +
+            "," +
+            (((110 - 30) / this.numRows) * row + 30) +
+            ")";
+
           triangles.push({
             id: curTriangle++,
-            color: "#1e1e1e",
+            //color: "#1a2a3a",
+            color: color,
             point1: n,
             point2: downOne,
             point3: downTwo,
@@ -601,18 +618,18 @@ var view1 = new Vue({
         }
 
         if (this.getRow(right, longRow) === row && downTwo < numPoints) {
-          console.log("right triangle created");
-          // triangles.push = {
-          //   x1: this.points[n].x,
-          //   y1: this.points[n].y,
-          //   x2: this.points[right].x,
-          //   y2: this.points[right].y,
-          //   x3: this.points[downTwo].x,
-          //   y3: this.points[downTwo].y,
-          // };
+          let color =
+            "rgb(" +
+            (((90 - 30) / this.numRows) * row + 30) +
+            "," +
+            (((100 - 30) / this.numRows) * row + 30) +
+            "," +
+            (((110 - 30) / this.numRows) * row + 30) +
+            ")";
           triangles.push({
             id: curTriangle++,
-            color: "#1e1e1e",
+            //color: "#1a2a3a",
+            color: color,
             point1: n,
             point2: right,
             point3: downTwo,
@@ -631,21 +648,11 @@ var view1 = new Vue({
           });
         }
       }
-      console.log("triangles");
-      console.log(triangles);
 
       this.triangles = triangles;
     },
-    createShortestPath() {
-      // function getRandomInt(min, max) {
-      //   min = Math.ceil(min);
-      //   max = Math.floor(max);
-      //   return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
-      // }
-      // let pointA = getRandomInt(0, this.numPoints - 1);
-      // let pointB = getRandomInt(0, this.numPoints - 1);
-
-      // populate digraph with subarrays (to push edges)
+    createShortestPathsTree() {
+      // reset digraph and supporting arrays
       for (let n = 0; n < this.numPoints; n++) {
         pointIndexInPQ[n] = null;
         distTo[n] = Infinity;
@@ -653,17 +660,23 @@ var view1 = new Vue({
         minHeapPQ[n] = { point: -1, weight: Infinity };
       }
 
-      findShortestPathDijkstra(this.pointA);
+      findShortestPathDijkstra(this.pathEater.from);
 
       let path = [];
 
-      for (let n = this.pointB; n != this.pointA; n = edgeTo[n].from) {
+      for (
+        let n = this.pathEater.to;
+        n != this.pathEater.from;
+        n = edgeTo[n].from
+      ) {
         const x1 = this.points[n].x;
         const y1 = this.points[n].y;
         const x2 = this.points[edgeTo[n].from].x;
         const y2 = this.points[edgeTo[n].from].y;
 
         path.push({
+          point1: n,
+          point2: edgeTo[n].from,
           x1: x1,
           y1: y1,
           x2: x2,
@@ -674,26 +687,69 @@ var view1 = new Vue({
       this.pathLines = path;
     },
     mouseEnterTriangle: function(point, triangle) {
-      if (this.pointToggle) {
-        this.pointA = Math.floor(Math.random() * this.numPoints);
-        this.pointToggle = false;
+      this.pathEater.to = point;
+
+      // get nearest point to cursor
+      let point1 = this.triangles[triangle].point1;
+      let point2 = this.triangles[triangle].point2;
+      let point3 = this.triangles[triangle].point3;
+
+      if (distTo[point1] < distTo[point2] && distTo[point1] < distTo[point3]) {
+        this.pathEater.to = point1;
+      } else if (
+        distTo[point2] < distTo[point1] &&
+        distTo[point2] < distTo[point3]
+      ) {
+        this.pathEater.to = point2;
       } else {
-        this.pointB = point;
-        this.pointToggle = true;
+        this.pathEater.to = point3;
       }
 
-      this.triangles[triangle].color = "hotpink";
+      this.triangles[triangle].color = "#1b2a3a";
 
-      this.createShortestPath();
+      this.createShortestPathsTree();
     },
     mouseLeaveTriangle: function(triangle) {
-      this.triangles[triangle].color = "transparent";
+      this.triangles[triangle].color = "#1e1e1e";
     },
-    addToList: function() {
-      this.list.push({ name: this.itemName });
+    initializePathEater: function() {
+      console.log("initializePathEater()");
+      let pathEaterSource = this.getRandomIntInRange(
+        2 * this.longRow,
+        this.numPoints - 2 * this.longRow
+      );
+      console.log("pathEaterSource = " + pathEaterSource);
+      this.pathEater.from = pathEaterSource;
+      this.pathEater.x = this.points[pathEaterSource].x;
+      this.pathEater.y = this.points[pathEaterSource].y;
+      this.pathEater.moving = false;
+      this.pathEater.adjacent = false;
+      this.pathEater.animate = false;
     },
-    removeFromList: function(index) {
-      this.list.splice(index, 1);
+    pathEaterEvaluate: function() {
+      //console.log("pathEaterEvaluate()");
+      if (this.pathEater.from === this.pathEater.to) {
+        // we have reached the source
+        this.pathEater.color = "#ff008a";
+      } else {
+        this.pathEater.color = "orangered";
+
+        if (!this.pathEater.moving && this.pathLines.length >= 1) {
+          let newSource = this.pathLines.pop().point1;
+          this.pathEater.moving = true;
+          this.pathEater.from = newSource;
+          this.pathEater.x = this.points[newSource].x;
+          this.pathEater.y = this.points[newSource].y;
+          this.pathEater.adjacent = false;
+          this.pathEater.animate = false;
+
+          if (this.pathLines.length === 0) {
+            this.pathEater.color = "#ff008a";
+          }
+
+          setTimeout(() => (this.pathEater.moving = false), 150);
+        }
+      }
     },
   },
   created: function() {
@@ -702,8 +758,11 @@ var view1 = new Vue({
     initDigraph(this.numPoints);
     this.createLines(this.longRow, this.numRows);
     this.createTriangles(this.longRow, this.numRows);
-    this.createShortestPath();
-    console.log(edgeTo);
+    this.initializePathEater();
+
+    setInterval(() => this.pathEaterEvaluate(), 160);
+    //this.createShortestPath();
+    // console.log(edgeTo);
   },
   mounted: function() {
     this.$nextTick(function() {

@@ -3,25 +3,6 @@ body {
   margin: 0px;
 }
 
-.shortest-paths {
-  background-color: #1e1e1e;
-  width: 100%;
-  height: 1200px;
-  color: #a6a6a6;
-}
-
-.navbar {
-  padding-top: 20px;
-  text-align: center;
-  width: 100%;
-  position: absolute;
-}
-
-.navbar-link {
-  margin-left: 5%;
-  margin-right: 5%;
-}
-
 .block {
   display: block;
 }
@@ -36,4 +17,61 @@ body {
 
 .font-Poppins {
   font-family: "Poppins", sans-serif;
+}
+
+.shortest-paths {
+  background-color: #1e1e1e;
+  width: 100%;
+  height: 1200px;
+  color: #a6a6a6;
+}
+
+#doesnotexist {
+  fill: red;
+  animation-name: genericAnim;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes genericAnim {
+  from {
+    fill: red;
+    cx: 50;
+  }
+
+  to {
+    fill: blue;
+    cx: 600;
+  }
+}
+
+.navbar {
+  padding-top: 20px;
+  text-align: center;
+  width: 100%;
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.507);
+}
+
+.navbar-link {
+  margin-left: 5%;
+  margin-right: 5%;
+  padding-bottom: 20px;
+}
+
+.intro-text {
+  position: absolute;
+  display: inline-block;
+  text-align: center;
+  width: 100%;
+  top: 20%;
+  font-size: 80px;
+  color: white;
+  pointer-events: none;
+  font-family: "Lato";
+}
+
+.div2 {
+  display: block;
+  height: 500px;
 }

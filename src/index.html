@@ -19,14 +19,17 @@
       class="block color-1e shortest-paths"
       v-bind:style="{ height: screenHeight+'px'}"
     >
-      <div class="shortest-paths" v-bind:style="{ height: screenHeight+'px'}">
-        <div class="navbar">
-          <div class="navbar-link inline-block">
-            <button v-on:click="createShortestPath">CLICKC</button>Resume
-          </div>
-          <div class="navbar-link inline-block">Portfolio</div>
-          <div class="navbar-link inline-block">Sidearms</div>
+      <div class="navbar">
+        <div class="navbar-link inline-block">
+          Resume
         </div>
+        <div class="navbar-link inline-block">Portfolio</div>
+        <div class="navbar-link inline-block">Sidearms</div>
+      </div>
+      <div class="intro-text">
+        Software Engineer.<br />Web Developer.<br />Yuri Dubler.
+      </div>
+      <div class="shortest-paths" v-bind:style="{ height: screenHeight+'px'}">
         <svg
           version="1.1"
           baseProfile="full"
@@ -34,7 +37,6 @@
           xmlns="http://www.w3.org/2000/svg"
           width="100%"
         >
-          <!-- <g transform="scale(0.5) translate(100 100)"> -->
           <polygon
             v-for="triangle in triangles"
             :points="triangle.points"
@@ -42,14 +44,6 @@
             @mouseenter="mouseEnterTriangle(triangle.point1, triangle.id)"
             @mouseleave="mouseLeaveTriangle(triangle.id)"
           ></polygon>
-
-          <g v-for="point in points" v-bind:key="Math.random()">
-            <circle :cx="point.x" :cy="point.y" r="9" fill="#1a1a1a" />
-            <text :x="point.x" :y="point.y" fontSize="40px">
-              <!-- id:{{point.id}} / row:{{point.row}} / i:{{point.index}} -->
-              <!-- {{point.id}} -->
-            </text>
-          </g>
 
           <line
             v-for="line in lines"
@@ -61,19 +55,82 @@
             stroke-width="2"
             pointer-events="none"
           />
+
+          <circle
+            v-for="point in points"
+            :cx="point.x"
+            :cy="point.y"
+            r="9"
+            fill="#161616"
+            stroke="#1b2a3a"
+            stroke-width="1"
+          />
           <line
             v-for="path in pathLines"
             :x1="path.x1"
             :y1="path.y1"
             :x2="path.x2"
             :y2="path.y2"
-            stroke="orangered"
+            stroke="#1b2a3a"
+            stroke-width="10"
+            pointer-events="none"
+          />
+          <line
+            v-for="path in pathLines"
+            :x1="path.x1"
+            :y1="path.y1"
+            :x2="path.x2"
+            :y2="path.y2"
+            stroke="#ff008a"
             stroke-width="2"
             pointer-events="none"
           />
+          <circle
+            :cx="pathEater.x"
+            :cy="pathEater.y"
+            :fill="pathEater.color"
+            r="12"
+          ></circle>
+          <!-- <text
+            :x="screenWidth/2"
+            :y="screenHeight/2 - 200"
+            text-anchor="middle"
+            dominant-baseline="middle"
+            font-family="Poppins, sans-serif"
+            font-size="80px"
+            fill="white"
+            pointer-events="none"
+          >
+            Software Engineer.
+          </text>
+          <text
+            :x="screenWidth/2"
+            :y="screenHeight/2 - 100"
+            text-anchor="middle"
+            dominant-baseline="middle"
+            font-family="Poppins, sans-serif"
+            font-size="80px"
+            fill="white"
+            pointer-events="none"
+          >
+            Web Developer.
+          </text>
+          <text
+            :x="screenWidth/2"
+            :y="screenHeight/2"
+            text-anchor="middle"
+            dominant-baseline="middle"
+            font-family="Poppins, sans-serif"
+            font-size="80px"
+            fill="white"
+            pointer-events="none"
+          >
+            Yuri Dubler.
+          </text> -->
         </svg>
       </div>
     </div>
+    <div class="div2">Hello yall</div>
 
     <!-- <div id="view-two">
       {{ appName }}

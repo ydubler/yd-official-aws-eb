@@ -35,31 +35,42 @@
           width="100%"
         >
           <!-- <g transform="scale(0.5) translate(100 100)"> -->
-          <g>
-            <g v-for="point in points" v-bind:key="Math.random()">
-              <circle :cx="point.x" :cy="point.y" r="7" fill="#060606" />
-              <text :x="point.x" :y="point.y" fontSize="40px">
-                <!-- id:{{point.id}} / row:{{point.row}} / i:{{point.index}} -->
-                {{point.id}}
-              </text>
-            </g>
-            <line
-              v-for="line in lines"
-              :x1="line.x1"
-              :y1="line.y1"
-              :x2="line.x2"
-              :y2="line.y2"
-              stroke="#060606"
-            />
-            <line
-              v-for="path in pathLines"
-              :x1="path.x1"
-              :y1="path.y1"
-              :x2="path.x2"
-              :y2="path.y2"
-              stroke="orangered"
-            />
+          <polygon
+            v-for="triangle in triangles"
+            :points="triangle.points"
+            :fill="triangle.color"
+            @mouseenter="mouseEnterTriangle(triangle.point1, triangle.id)"
+            @mouseleave="mouseLeaveTriangle(triangle.id)"
+          ></polygon>
+
+          <g v-for="point in points" v-bind:key="Math.random()">
+            <circle :cx="point.x" :cy="point.y" r="9" fill="#1a1a1a" />
+            <text :x="point.x" :y="point.y" fontSize="40px">
+              <!-- id:{{point.id}} / row:{{point.row}} / i:{{point.index}} -->
+              <!-- {{point.id}} -->
+            </text>
           </g>
+
+          <line
+            v-for="line in lines"
+            :x1="line.x1"
+            :y1="line.y1"
+            :x2="line.x2"
+            :y2="line.y2"
+            stroke="#161616"
+            stroke-width="2"
+            pointer-events="none"
+          />
+          <line
+            v-for="path in pathLines"
+            :x1="path.x1"
+            :y1="path.y1"
+            :x2="path.x2"
+            :y2="path.y2"
+            stroke="orangered"
+            stroke-width="2"
+            pointer-events="none"
+          />
         </svg>
       </div>
     </div>

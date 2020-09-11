@@ -291,6 +291,12 @@ var view1 = new Vue({
     appName: "Yuri Dubler Official",
     screenHeight: "100%",
     screenWidth: "100%",
+    pointToggle: true,
+    sourceNode: 0,
+    pointA: 0,
+    pointB: 90,
+    longRow: 11, // Can be even or odd
+    numRows: 11, // MUST BE ODD
     numPoints: -1,
     points: [
       { x: -20, y: -20 },
@@ -301,6 +307,7 @@ var view1 = new Vue({
     lines: [],
     pathLines: [],
     edges: [],
+    triangles: [],
   },
   methods: {
     getScreenDimensions: function() {
@@ -342,7 +349,7 @@ var view1 = new Vue({
         let j = Math.floor((n - (2 * longRow - 1) * k) / longRow);
         let row = 2 * k + j;
 
-        let variability = 0.4;
+        let variability = 0.5;
 
         let PointVariability = function(variabilityIn, delta, row, index) {
           if (
@@ -535,14 +542,108 @@ var view1 = new Vue({
 
       //console.log(digraph);
     },
-    createShortestPath() {
-      function getRandomInt(min, max) {
-        min = Math.ceil(min);
-        max = Math.floor(max);
-        return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
+    createTriangles: function(longRow, numRows) {
+      console.log(
+        "createTriangles( L = " + longRow + " , R = " + numRows + " )"
+      );
+      const numPoints =
+        (Math.floor(numRows / 2) + 1) * longRow +
+        Math.floor(numRows / 2) * (longRow - 1);
+      console.log("\tnumPoints= " + numPoints);
+
+      let triangles = [];
+
+      let curTriangle = 0;
+      // iterate through every point
+      for (let n = 0; n < this.numPoints; n++) {
+        console.log("n = " + n);
+        let k = Math.floor(n / (2 * longRow - 1));
+        let j = Math.floor((n - (2 * longRow - 1) * k) / longRow);
+        let row = 2 * k + j;
+
+        let downOne = n + longRow - 1;
+        let downTwo = n + longRow;
+        let right = n + 1;
+
+        if (
+          this.getRow(downOne, longRow) === this.getRow(downTwo, longRow) &&
+          downOne < numPoints &&
+          downTwo < downTwo < numPoints
+        ) {
+          console.log("down triangle created");
+          // triangles.push({
+          //   x1: this.points[n].x,
+          //   y1: this.points[n].y,
+          //   x2: this.points[downOne].x,
+          //   y2: this.points[downOne].y,
+          //   x3: this.points[downTwo].x,
+          //   y3: this.points[downTwo].y,
+          // });
+          triangles.push({
+            id: curTriangle++,
+            color: "#1e1e1e",
+            point1: n,
+            point2: downOne,
+            point3: downTwo,
+            points:
+              this.points[n].x +
+              "," +
+              this.points[n].y +
+              " " +
+              this.points[downOne].x +
+              "," +
+              this.points[downOne].y +
+              " " +
+              this.points[downTwo].x +
+              "," +
+              this.points[downTwo].y,
+          });
+        }
+
+        if (this.getRow(right, longRow) === row && downTwo < numPoints) {
+          console.log("right triangle created");
+          // triangles.push = {
+          //   x1: this.points[n].x,
+          //   y1: this.points[n].y,
+          //   x2: this.points[right].x,
+          //   y2: this.points[right].y,
+          //   x3: this.points[downTwo].x,
+          //   y3: this.points[downTwo].y,
+          // };
+          triangles.push({
+            id: curTriangle++,
+            color: "#1e1e1e",
+            point1: n,
+            point2: right,
+            point3: downTwo,
+            points:
+              this.points[n].x +
+              "," +
+              this.points[n].y +
+              " " +
+              this.points[right].x +
+              "," +
+              this.points[right].y +
+              " " +
+              this.points[downTwo].x +
+              "," +
+              this.points[downTwo].y,
+          });
+        }
       }
-      let pointA = getRandomInt(0, this.numPoints - 1);
-      let pointB = getRandomInt(0, this.numPoints - 1);
+      console.log("triangles");
+      console.log(triangles);
+
+      this.triangles = triangles;
+    },
+    createShortestPath() {
+      // function getRandomInt(min, max) {
+      //   min = Math.ceil(min);
+      //   max = Math.floor(max);
+      //   return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
+      // }
+      // let pointA = getRandomInt(0, this.numPoints - 1);
+      // let pointB = getRandomInt(0, this.numPoints - 1);
 
       // populate digraph with subarrays (to push edges)
       for (let n = 0; n < this.numPoints; n++) {
@@ -552,11 +653,11 @@ var view1 = new Vue({
         minHeapPQ[n] = { point: -1, weight: Infinity };
       }
 
-      findShortestPathDijkstra(pointA, pointB);
+      findShortestPathDijkstra(this.pointA);
 
       let path = [];
 
-      for (let n = pointB; n != pointA; n = edgeTo[n].from) {
+      for (let n = this.pointB; n != this.pointA; n = edgeTo[n].from) {
         const x1 = this.points[n].x;
         const y1 = this.points[n].y;
         const x2 = this.points[edgeTo[n].from].x;
@@ -572,6 +673,22 @@ var view1 = new Vue({
 
       this.pathLines = path;
     },
+    mouseEnterTriangle: function(point, triangle) {
+      if (this.pointToggle) {
+        this.pointA = Math.floor(Math.random() * this.numPoints);
+        this.pointToggle = false;
+      } else {
+        this.pointB = point;
+        this.pointToggle = true;
+      }
+
+      this.triangles[triangle].color = "hotpink";
+
+      this.createShortestPath();
+    },
+    mouseLeaveTriangle: function(triangle) {
+      this.triangles[triangle].color = "transparent";
+    },
     addToList: function() {
       this.list.push({ name: this.itemName });
     },
@@ -580,13 +697,11 @@ var view1 = new Vue({
     },
   },
   created: function() {
-    const longRow = 19; // Can be even or odd
-    const numRows = 19; // MUST BE ODD
     this.getScreenDimensions();
-    this.createPoints(longRow, numRows);
+    this.createPoints(this.longRow, this.numRows);
     initDigraph(this.numPoints);
-    this.createLines(longRow, numRows);
-
+    this.createLines(this.longRow, this.numRows);
+    this.createTriangles(this.longRow, this.numRows);
     this.createShortestPath();
     console.log(edgeTo);
   },

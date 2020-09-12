@@ -1,3 +1,8 @@
+:root {
+  --pathEaterDeltaX: 100px;
+  --pathEaterDeltaY: 100px;
+}
+
 body {
   font-family: "Poppins", sans-serif;
   margin: 0px;
@@ -30,22 +35,27 @@ body {
   color: #a6a6a6;
 }
 
-#doesnotexist {
-  fill: red;
-  animation-name: genericAnim;
-  animation-duration: 3s;
-  animation-iteration-count: infinite;
+.pathEater {
+  animation-name: pathEaterMove;
+  animation-duration: 450ms;
+  animation-iteration-count: 1;
 }
 
-@keyframes genericAnim {
+@keyframes pathEaterMove {
   from {
-    fill: red;
-    cx: 50;
+    fill: orangered;
+    r: 8px;
+    transform: translate(var(--pathEaterDeltaX), var(--pathEaterDeltaY));
+  }
+
+  50% {
+    r: 10px;
   }
 
   to {
-    fill: blue;
-    cx: 600;
+    fill: #ff008a;
+    r: 8px;
+    transform: translate(0px, 0px);
   }
 }
 

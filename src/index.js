@@ -296,6 +296,8 @@ var view1 = new Vue({
     mouseTrianglePoints: "",
     pathEater: {
       moving: false,
+      deltaX: 100,
+      deltaY: 100,
       adjacent: false,
       animate: false,
       color: "orangered",
@@ -320,6 +322,18 @@ var view1 = new Vue({
     pathLines: [],
     edges: [],
     triangles: [],
+  },
+  computed: {
+    cssVars() {
+      console.log("returning pathEaterDeltas:");
+      console.log("-> pathEaterDeltaX = " + this.pathEater.deltaX);
+      console.log("-> pathEaterDeltaY = " + this.pathEater.deltaY);
+      return {
+        /* variables you want to pass to css */
+        "--pathEaterDeltaX": this.pathEater.deltaX + "px",
+        "--pathEaterDeltaY": this.pathEater.deltaY + "px",
+      };
+    },
   },
   methods: {
     getScreenDimensions: function() {
@@ -743,19 +757,50 @@ var view1 = new Vue({
       this.pathEater.animate = false;
     },
     pathEaterEvaluate: function() {
+      this.pathEater.moving = false;
       //console.log("pathEaterEvaluate()");
       if (this.pathEater.from === this.pathEater.to) {
         // we have reached the source
         this.pathEater.color = "#ff008a";
+        this.pathEater.moving = false;
       } else {
         this.pathEater.color = "orangered";
 
-        if (!this.pathEater.moving && this.pathLines.length >= 1) {
+        if (this.pathLines.length >= 1) {
+          // Get the new source (the point the path-eater is moving to)
           let newSource = this.pathLines.pop().point1;
-          this.pathEater.moving = true;
-          this.pathEater.from = newSource;
+
+          // Set the CSS property so the animation works correctly
+          let pathEaterDeltaX = this.pathEater.x - this.points[newSource].x;
+          let pathEaterDeltaY = this.pathEater.y - this.points[newSource].y;
+
+          console.log("creating pathEaterDeltas:");
+          console.log("0> pathEaterDeltaX = " + pathEaterDeltaX);
+          console.log("0> pathEaterDeltaY = " + pathEaterDeltaY);
+
+          console.log("SETTING PROPERTY VALUES ON ROOT");
+          this.pathEater.deltaX = pathEaterDeltaX;
+          this.pathEater.deltaY = pathEaterDeltaY;
+
+          let root = document.documentElement;
+          root.style.setProperty("--pathEaterDeltaX", pathEaterDeltaX + "px");
+          root.style.setProperty("--pathEaterDeltaY", pathEaterDeltaY + "px");
+          console.log("GETTING PROPERTY VALUES");
+
+          console.log(
+            "-----> pedeltax = " +
+              root.style.getPropertyValue("--pathEaterDeltaX")
+          );
+          console.log(
+            "-----> pedeltay = " +
+              root.style.getPropertyValue("--pathEaterDeltaY")
+          );
+
           this.pathEater.x = this.points[newSource].x;
           this.pathEater.y = this.points[newSource].y;
+          this.pathEater.moving = true;
+
+          this.pathEater.from = newSource;
           this.pathEater.adjacent = false;
           this.pathEater.animate = false;
 
@@ -763,7 +808,7 @@ var view1 = new Vue({
             this.pathEater.color = "#ff008a";
           }
 
-          setTimeout(() => (this.pathEater.moving = false), 150);
+          setTimeout(() => (this.pathEater.moving = false), 450);
         }
       }
     },
@@ -776,7 +821,7 @@ var view1 = new Vue({
     this.createTriangles(this.longRow, this.numRows);
     this.initializePathEater();
 
-    setInterval(() => this.pathEaterEvaluate(), 160);
+    setInterval(() => this.pathEaterEvaluate(), 500);
     //this.createShortestPath();
     // console.log(edgeTo);
   },

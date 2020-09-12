@@ -79,13 +79,13 @@ body {
   display: inline-block;
   text-align: center;
   width: 100%;
-  top: 20%;
-  font-size: 80px;
+  padding-top: 200px;
+  font-size: 5vw;
   color: white;
   pointer-events: none;
 }
 
 .div2 {
   display: block;
-  height: 500px;
+  height: 1000px;
 }

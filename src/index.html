@@ -27,7 +27,7 @@
         <div class="navbar-link inline-block">Sidearms</div>
       </div>
       <div class="intro-text font-Lato">
-        Software Engineer.<br />Web Developer.<br />Yuri Dubler.
+        Software Engineer<br /><br />Web Developer.
       </div>
       <div class="shortest-paths" v-bind:style="{ height: screenHeight+'px'}">
         <svg
@@ -41,7 +41,7 @@
             v-for="triangle in triangles"
             v-on:click="mouseEnterTriangle(triangle.point1, triangle.id)"
             :points="triangle.points"
-            :fill="triangle.color"
+            fill="#1e1e1e"
             @mouseenter="mouseEnterTriangle(triangle.point1, triangle.id)"
             @mouseleave="mouseLeaveTriangle(triangle.id)"
           ></polygon>

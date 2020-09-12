@@ -340,8 +340,15 @@ var view1 = new Vue({
       console.log("getScreenDimensions()");
       screenHeightComputed = window.screen.availHeight;
       screenWidthComputed = window.screen.availWidth;
-      this.screenHeight = screenHeightComputed;
-      this.screenWidth = screenWidthComputed;
+
+      if (screenHeightComputed > screenWidthComputed) {
+        this.screenWidth = screenHeightComputed;
+        this.screenHeight = screenWidthComputed;
+      } else {
+        this.screenHeight = screenHeightComputed;
+        this.screenWidth = screenWidthComputed;
+      }
+
       console.log("\tscreen height = " + screenHeightComputed);
       console.log("\tscreen width = " + screenWidthComputed);
     },
@@ -358,6 +365,7 @@ var view1 = new Vue({
       max = Math.floor(max);
       return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
     },
+    // creates all of the points in a predefined grid with a maximum x and y offset to create "controlled variability"
     createPoints: function(longRow, numRows) {
       console.log("createPoints( L = " + longRow + " , R = " + numRows + " )");
       const numPoints =
@@ -602,19 +610,17 @@ var view1 = new Vue({
           downOne < numPoints &&
           downTwo < downTwo < numPoints
         ) {
-          let color =
-            "rgb(" +
-            (((40 - 30) / this.numRows) * row + 30) +
-            "," +
-            (((40 - 30) / this.numRows) * row + 30) +
-            "," +
-            (((40 - 30) / this.numRows) * row + 30) +
-            ")";
+          // let color =
+          //   "rgb(" +
+          //   (((40 - 30) / this.numRows) * row + 30) +
+          //   "," +
+          //   (((40 - 30) / this.numRows) * row + 30) +
+          //   "," +
+          //   (((40 - 30) / this.numRows) * row + 30) +
+          //   ")";
 
           triangles.push({
             id: curTriangle++,
-            //color: "#1a2a3a",
-            color: color,
             point1: n,
             point2: downOne,
             point3: downTwo,
@@ -634,18 +640,16 @@ var view1 = new Vue({
         }
 
         if (this.getRow(right, longRow) === row && downTwo < numPoints) {
-          let color =
-            "rgb(" +
-            (((40 - 30) / this.numRows) * row + 30) +
-            "," +
-            (((40 - 30) / this.numRows) * row + 30) +
-            "," +
-            (((40 - 30) / this.numRows) * row + 30) +
-            ")";
+          // let color =
+          //   "rgb(" +
+          //   (((40 - 30) / this.numRows) * row + 30) +
+          //   "," +
+          //   (((40 - 30) / this.numRows) * row + 30) +
+          //   "," +
+          //   (((40 - 30) / this.numRows) * row + 30) +
+          //   ")";
           triangles.push({
             id: curTriangle++,
-            //color: "#1a2a3a",
-            color: color,
             point1: n,
             point2: right,
             point3: downTwo,

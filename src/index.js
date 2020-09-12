@@ -336,21 +336,18 @@ var view1 = new Vue({
     },
   },
   methods: {
-    getScreenDimensions: function() {
-      console.log("getScreenDimensions()");
+    setScreenDimensions: function() {
+      console.log("setScreenDimensions()");
       screenHeightComputed = window.screen.availHeight;
       screenWidthComputed = window.screen.availWidth;
 
       if (screenHeightComputed > screenWidthComputed) {
         this.screenWidth = screenHeightComputed;
-        this.screenHeight = screenWidthComputed;
+        this.screenHeight = screenHeightComputed;
       } else {
         this.screenHeight = screenHeightComputed;
         this.screenWidth = screenWidthComputed;
       }
-
-      console.log("\tscreen height = " + screenHeightComputed);
-      console.log("\tscreen width = " + screenWidthComputed);
     },
     getRow: function(id, longRow) {
       let k = Math.floor(id / (2 * longRow - 1));
@@ -818,7 +815,7 @@ var view1 = new Vue({
     },
   },
   created: function() {
-    this.getScreenDimensions();
+    this.setScreenDimensions();
     this.createPoints(this.longRow, this.numRows);
     initDigraph(this.numPoints);
     this.createLines(this.longRow, this.numRows);

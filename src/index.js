@@ -289,6 +289,7 @@ var view1 = new Vue({
   el: name,
   data: {
     appName: "Yuri Dubler Official",
+    deviceOrientation: 0,
     screenHeight: "100%",
     screenWidth: "100%",
     numTailTriangles: 0,
@@ -340,7 +341,17 @@ var view1 = new Vue({
       };
     },
   },
+
   methods: {
+    createOrientationChangeHandler: function() {
+      window.addEventListener("orientationchange", function(event) {
+        console.log(
+          "the orientation of the device is now " +
+            event.target.screen.orientation.angle
+        );
+        this.deviceOrientation = event.target.screen.orientation.angle;
+      });
+    },
     setScreenDimensions: function() {
       console.log("setScreenDimensions()");
       screenHeightComputed = window.screen.availHeight;
@@ -912,6 +923,7 @@ var view1 = new Vue({
     },
   },
   created: function() {
+    this.createOrientationChangeHandler();
     this.setScreenDimensions();
     this.balanceRowsAndCols();
     this.createPoints(this.longRow, this.numRows);

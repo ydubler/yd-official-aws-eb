@@ -352,21 +352,25 @@ var view1 = new Vue({
       }
     },
     balanceRowsAndCols: function() {
-      const deltaX = this.screenWidth / (2 * this.longRow - 3);
-      const deltaY = this.screenHeight / (this.numRows - 2);
-
-      let ratio = deltaX / deltaY;
-
-      if (deltaY > deltaY) {
-        let newNumRows = this.numRows * ratio;
-        if (newNumRows % 2 === 1) {
-          this.numRows = newNumRows;
-        } else {
-          this.numRows = newNumRows - 1;
-        }
+      if (Math.abs(this.screenWidth - this.screenHeight) < Number.EPSILON) {
+        this.longRow = this.numRows;
       } else {
-        let newLongrow = Math.round(this.longRow * ratio);
-        this.longRow = newLongrow;
+        const deltaX = this.screenWidth / (2 * this.longRow - 3);
+        const deltaY = this.screenHeight / (this.numRows - 2);
+
+        let ratio = deltaX / deltaY;
+
+        if (deltaY > deltaY) {
+          let newNumRows = this.numRows * ratio;
+          if (newNumRows % 2 === 1) {
+            this.numRows = newNumRows;
+          } else {
+            this.numRows = newNumRows - 1;
+          }
+        } else {
+          let newLongrow = Math.round(this.longRow * ratio);
+          this.longRow = newLongrow;
+        }
       }
     },
     getRow: function(id, longRow) {

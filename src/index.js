@@ -315,7 +315,7 @@ var view1 = new Vue({
     pointB: 90,
     longRow: 21, // Can be even or odd
     numRows: 13, // MUST BE ODD
-    variability: 0.4,
+    variability: 0.7,
     numPoints: -1,
     points: [
       { x: -20, y: -20 },
@@ -405,6 +405,7 @@ var view1 = new Vue({
       console.log("\tdeltaY = " + deltaY);
 
       let points = [];
+      let changeInVariability = this.variability / numPoints;
 
       // iterate through every point
       for (let n = 0; n < numPoints; n++) {
@@ -412,7 +413,10 @@ var view1 = new Vue({
         let j = Math.floor((n - (2 * longRow - 1) * k) / longRow);
         let row = 2 * k + j;
 
-        let variability = this.variability;
+        let variability = this.variability - n * changeInVariability;
+        if (n > numPoints - 3 * longRow + 1) {
+          variability = 0;
+        }
 
         // variability function
         let PointVariability = function(variabilityIn, delta, row, index) {
@@ -832,6 +836,9 @@ var view1 = new Vue({
           "--transformOrigin",
           pointXAvg + "px " + pointYAvg + "px "
         );
+
+        // this.pathEater.x = pointXAvg;
+        // this.pathEater.y = pointYAvg;
 
         this.pathEater.trianglePoints =
           this.points[point1].x +

@@ -54,7 +54,7 @@ body {
   }
 
   to {
-    fill: rgb(255, 0, 138);
+    fill: #ff008a;
     r: 8px;
     transform: translate(0px, 0px);
   }
@@ -74,12 +74,12 @@ body {
 
   30% {
     r: 20px;
-    fill: orangered;
+    fill: gold;
   }
 
   90% {
     r: 20px;
-    fill: orangered;
+    fill: gold;
   }
 
   to {
@@ -98,22 +98,22 @@ body {
 @keyframes pathEaterTriangleBump {
   from {
     transform: translate(0px, 0px);
-    fill: #ff00b3;
+    fill: #ffd700;
   }
 
   50% {
     transform: translate(0px, -20px);
-    fill: #3cff00;
+    fill: #d4af37;
   }
 
   90% {
     transform: translate(0px, -20px);
-    fill: #3cff00;
+    fill: #d4af37;
   }
 
   to {
     transform: translate(0px, 0px);
-    fill: #ff00b3;
+    fill: #ffd700;
   }
 }
 
@@ -180,6 +180,15 @@ body {
   font-size: 5vw;
   color: white;
   pointer-events: none;
+}
+
+.intro-text-paladin {
+  background: -webkit-linear-gradient(#d4af37, #ffe865);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-family: "Sonsie One", cursive;
+  font-family: "Ranchers", cursive;
 }
 
 .div2 {

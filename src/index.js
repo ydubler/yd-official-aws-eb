@@ -293,6 +293,7 @@ var view1 = new Vue({
     screenWidth: "100%",
     pointToggle: true,
     mouseOnTriangle: false,
+    mouseTriangleColor: "#1b2a3a",
     mouseTrianglePoints: "",
     pathEater: {
       moving: false,
@@ -309,7 +310,7 @@ var view1 = new Vue({
     sourceNode: 0,
     pointA: 0,
     pointB: 90,
-    longRow: 13, // Can be even or odd
+    longRow: 21, // Can be even or odd
     numRows: 13, // MUST BE ODD
     numPoints: -1,
     points: [
@@ -349,6 +350,24 @@ var view1 = new Vue({
         this.screenWidth = screenWidthComputed;
       }
     },
+    balanceRowsAndCols: function() {
+      const deltaX = this.screenWidth / (2 * this.longRow - 3);
+      const deltaY = this.screenHeight / (this.numRows - 2);
+
+      let ratio = deltaX / deltaY;
+
+      if (deltaY > deltaY) {
+        let newNumRows = this.numRows * ratio;
+        if (newNumRows % 2 === 1) {
+          this.numRows = newNumRows;
+        } else {
+          this.numRows = newNumRows + 1;
+        }
+      } else {
+        let newLongrow = Math.round(this.longRow * ratio);
+        this.longRow = newLongrow;
+      }
+    },
     getRow: function(id, longRow) {
       let k = Math.floor(id / (2 * longRow - 1));
       let j = Math.floor((id - (2 * longRow - 1) * k) / longRow);
@@ -385,7 +404,7 @@ var view1 = new Vue({
         let j = Math.floor((n - (2 * longRow - 1) * k) / longRow);
         let row = 2 * k + j;
 
-        let variability = 0.5;
+        let variability = 0.4;
 
         let PointVariability = function(variabilityIn, delta, row, index) {
           if (
@@ -704,7 +723,14 @@ var view1 = new Vue({
       this.pathLines = path;
     },
     mouseEnterTriangle: function(point, triangle) {
+      if (this.pathEater.from === this.pathEater.to) {
+        this.mouseTriangleColor = "#ff008a";
+      } else {
+        this.mouseTriangleColor = "#1b2a3a";
+      }
+
       this.pathEater.to = point;
+      this.triangleMouseIn = triangle;
 
       // get nearest point to cursor
       let point1 = this.triangles[triangle].point1;
@@ -764,8 +790,10 @@ var view1 = new Vue({
         // we have reached the source
         this.pathEater.color = "#ff008a";
         this.pathEater.moving = false;
+        this.mouseTriangleColor = "#ff008a";
       } else {
         this.pathEater.color = "orangered";
+        this.mouseTriangleColor = "#1b2a3a";
 
         if (this.pathLines.length >= 1) {
           // Get the new source (the point the path-eater is moving to)
@@ -816,6 +844,7 @@ var view1 = new Vue({
   },
   created: function() {
     this.setScreenDimensions();
+    this.balanceRowsAndCols();
     this.createPoints(this.longRow, this.numRows);
     initDigraph(this.numPoints);
     this.createLines(this.longRow, this.numRows);

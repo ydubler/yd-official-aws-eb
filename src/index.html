@@ -63,6 +63,19 @@
             stroke-width="2"
             pointer-events="none"
           />
+          <line
+            v-if="mouseOnTriangle===true"
+            v-for="line in mouseTriangleLines"
+            :x1="line.x1"
+            :y1="line.y1"
+            :x2="line.x2"
+            :y2="line.y2"
+            stroke="#ff008a"
+            stroke-width="5"
+            pointer-events="none"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          ></line>
 
           <circle
             v-for="point in points"
@@ -127,7 +140,7 @@
           </g>
 
           <polygon
-            v-if="mouseOnTriangle===true"
+            v-if="mouseOnTriangle===true && pathEater.adjacent === true"
             v-bind:class="{ pathEaterTriangleBumping: pathEater.adjacent}"
             :points="mouseTrianglePoints"
             fill="#ffd700"

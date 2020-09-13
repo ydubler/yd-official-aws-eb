@@ -297,6 +297,7 @@ var view1 = new Vue({
     numTailTriangles: 0,
     mouseOnTriangle: false,
     mouseTrianglePoints: "",
+    mouseTriangleLines: [],
     pathEater: {
       point1: 0,
       point2: 0,
@@ -348,8 +349,8 @@ var view1 = new Vue({
     createResizeHandler: function() {
       window.addEventListener("resize", () => {
         this.resizecalled++;
-        this.height = window.height;
-        this.width = window.width;
+        this.height = window.screen.availHeight;
+        this.width = window.screen.availWidth;
       });
     },
     setScreenDimensions: function() {
@@ -788,6 +789,32 @@ var view1 = new Vue({
         this.points[point3].x +
         "," +
         this.points[point3].y;
+
+      // create the 3 lines that compose the entered triangle
+      let triangleLines = [];
+
+      triangleLines.push({
+        x1: this.points[point1].x,
+        y1: this.points[point1].y,
+        x2: this.points[point2].x,
+        y2: this.points[point2].y,
+      });
+
+      triangleLines.push({
+        x1: this.points[point1].x,
+        y1: this.points[point1].y,
+        x2: this.points[point3].x,
+        y2: this.points[point3].y,
+      });
+
+      triangleLines.push({
+        x1: this.points[point2].x,
+        y1: this.points[point2].y,
+        x2: this.points[point3].x,
+        y2: this.points[point3].y,
+      });
+
+      this.mouseTriangleLines = triangleLines;
 
       this.createShortestPathsTree();
 

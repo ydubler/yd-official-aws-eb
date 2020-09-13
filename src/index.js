@@ -349,7 +349,7 @@ var view1 = new Vue({
           "the orientation of the device is now " +
             event.target.screen.orientation.angle
         );
-        this.deviceOrientation = event.target.screen.orientation.angle;
+        this.deviceOrientation++;
       });
     },
     setScreenDimensions: function() {

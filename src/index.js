@@ -837,6 +837,15 @@ var view1 = new Vue({
           pointXAvg + "px " + pointYAvg + "px "
         );
 
+        // root.style.setProperty(
+        //   "--triangleCenterX",
+        //   this.pathEater.x - pointXAvg
+        // );
+        // root.style.setProperty(
+        //   "--triangleCenterY",
+        //   this.pathEater.y - pointYAvg
+        // );
+
         // this.pathEater.x = pointXAvg;
         // this.pathEater.y = pointYAvg;
 

@@ -2,6 +2,8 @@
   --pathEaterDeltaX: 100px;
   --pathEaterDeltaY: 100px;
   --transformOrigin: 0px;
+  --triangleCenterX: 100px;
+  --triangleCenterY: 100px;
 }
 
 body {
@@ -58,6 +60,28 @@ body {
     r: 8px;
     transform: translate(0px, 0px);
   }
+}
+
+/* Not used currently */
+.pathEaterCenter {
+  animation-name: pathEaterMoveIntoTriangle;
+  animation-duration: 450ms;
+  animation-iteration-count: 1;
+}
+/* Not used currently */
+@keyframes pathEaterMoveIntoTriangle {
+  from {
+    transform: translate(0px, 0px);
+  }
+  to {
+    transform: translate(var(--triangleCenterX), var(--triangleCenterY));
+  }
+}
+
+.pathEaterBumping {
+  animation-name: pathEaterBump;
+  animation-duration: 450ms;
+  animation-iteration-count: infinite;
 }
 
 .pathEaterBumping {

@@ -9,7 +9,7 @@
     <meta name="description" content="Yuri Dubler Official" />
     <link rel="stylesheet" type="text/css" href="../public/css/style.css" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Lato&family=Poppins&family=Ranchers&family=Sonsie+Onedisplay=swap"
+      href="https://fonts.googleapis.com/css2?family=Lato&family=Poppins&family=Ranchers&family=Sonsie+One&display=swap"
       rel="stylesheet"
     />
   </head>
@@ -120,14 +120,17 @@
               stroke-width="2"
             />
           </g>
+
           <polygon
             v-if="mouseOnTriangle===true"
-            v-bind:class="{ pathEaterTriangleBumping: pathEater.adjacent }"
+            v-bind:class="{ pathEaterTriangleBumping: pathEater.adjacent}"
             :points="mouseTrianglePoints"
             fill="#ffd700"
             pointer-events="none"
           ></polygon>
+
           <circle
+            v-if="pathEater.adjacent === false"
             id="pathEaterMoving"
             v-bind:class="{ pathEater: pathEater.moving }"
             :cx="pathEater.x"
@@ -138,6 +141,7 @@
             stroke-width="2px"
             pointer-events="none"
           ></circle>
+
           <circle
             v-if="pathEater.adjacent === true"
             class="pathEaterBumping"

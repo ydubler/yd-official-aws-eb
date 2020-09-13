@@ -59,6 +59,62 @@ body {
   }
 }
 
+.pathEaterBumping {
+  animation-name: pathEaterBump;
+  animation-duration: 450ms;
+  animation-iteration-count: infinite;
+}
+
+@keyframes pathEaterBump {
+  from {
+    fill: #ff008a;
+    r: 8px;
+  }
+
+  30% {
+    r: 20px;
+    fill: orangered;
+  }
+
+  90% {
+    r: 20px;
+    fill: orangered;
+  }
+
+  to {
+    fill: #ff008a;
+    r: 8px;
+  }
+}
+
+.pathEaterTriangleBump {
+  animation-name: pathEaterTriangleBump;
+  animation-duration: 450ms;
+  animation-iteration-count: infinite;
+}
+
+@keyframes pathEaterTriangleBump {
+  from {
+    transform: translate(0px, 0px);
+
+    fill: #ff00b3;
+  }
+
+  30% {
+    transform: translate(0px, -20px);
+    fill: #3cff00;
+  }
+
+  90% {
+    transform: translate(0px, -20px);
+    fill: #3cff00;
+  }
+
+  to {
+    transform: translate(0px, 0px);
+    fill: #ff00b3;
+  }
+}
 .navbar {
   padding-top: 20px;
   text-align: center;

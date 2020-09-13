@@ -293,14 +293,13 @@ var view1 = new Vue({
     screenWidth: "100%",
     pointToggle: true,
     mouseOnTriangle: false,
-    mouseTriangleColor: "#1b2a3a",
     mouseTrianglePoints: "",
     pathEater: {
       moving: false,
       deltaX: 100,
       deltaY: 100,
       adjacent: false,
-      animate: false,
+      trianglePoints: "",
       color: "orangered",
       from: 40,
       to: 41,
@@ -643,6 +642,7 @@ var view1 = new Vue({
 
           triangles.push({
             id: curTriangle++,
+            color: "#1e1e1e",
             point1: n,
             point2: downOne,
             point3: downTwo,
@@ -670,8 +670,10 @@ var view1 = new Vue({
           //   "," +
           //   (((40 - 30) / this.numRows) * row + 30) +
           //   ")";
+
           triangles.push({
             id: curTriangle++,
+            color: "#1e1e1e",
             point1: n,
             point2: right,
             point3: downTwo,
@@ -706,6 +708,7 @@ var view1 = new Vue({
 
       let path = [];
 
+      let numPaths = 0;
       for (
         let n = this.pathEater.to;
         n != this.pathEater.from;
@@ -719,24 +722,22 @@ var view1 = new Vue({
         path.push({
           point1: n,
           point2: edgeTo[n].from,
+          width: 2 + numPaths,
           x1: x1,
           y1: y1,
           x2: x2,
           y2: y2,
         });
+
+        numPaths++;
       }
 
       this.pathLines = path;
     },
     mouseEnterTriangle: function(point, triangle) {
-      if (this.pathEater.from === this.pathEater.to) {
-        this.mouseTriangleColor = "#ff008a";
-      } else {
-        this.mouseTriangleColor = "#1b2a3a";
-      }
-
       this.pathEater.to = point;
       this.triangleMouseIn = triangle;
+      this.triangles[triangle].color = "orangered";
 
       // get nearest point to cursor
       let point1 = this.triangles[triangle].point1;
@@ -768,9 +769,10 @@ var view1 = new Vue({
         "," +
         this.points[point3].y;
 
-      //this.triangles[triangle].color = "#1b2a3a";
-
       this.createShortestPathsTree();
+
+      //this.triangles[triangle].color = "#1b2a3a";
+      setTimeout(() => (this.triangles[triangle].color = "#1e1e1e"), 200);
     },
     mouseLeaveTriangle: function(triangle) {
       //this.triangles[triangle].color = "#1e1e1e";
@@ -794,12 +796,30 @@ var view1 = new Vue({
       //console.log("pathEaterEvaluate()");
       if (this.pathEater.from === this.pathEater.to) {
         // we have reached the source
+        this.pathEater.adjacent = true;
         this.pathEater.color = "#ff008a";
         this.pathEater.moving = false;
-        this.mouseTriangleColor = "#ff008a";
+
+        // get nearest point to cursor
+        let point1 = this.triangles[this.triangleMouseIn].point1;
+        let point2 = this.triangles[this.triangleMouseIn].point2;
+        let point3 = this.triangles[this.triangleMouseIn].point3;
+
+        this.pathEater.trianglePoints =
+          this.points[point1].x +
+          "," +
+          this.points[point1].y +
+          " " +
+          this.points[point2].x +
+          "," +
+          this.points[point2].y +
+          " " +
+          this.points[point3].x +
+          "," +
+          this.points[point3].y;
       } else {
+        this.pathEater.adjacent = false;
         this.pathEater.color = "orangered";
-        this.mouseTriangleColor = "#1b2a3a";
 
         if (this.pathLines.length >= 1) {
           // Get the new source (the point the path-eater is moving to)

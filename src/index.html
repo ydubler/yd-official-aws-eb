@@ -42,15 +42,9 @@
             v-for="triangle in triangles"
             v-on:click="mouseEnterTriangle(triangle.point1, triangle.id)"
             :points="triangle.points"
-            fill="#1e1e1e"
+            :fill="triangle.color"
             @mouseenter="mouseEnterTriangle(triangle.point1, triangle.id)"
             @mouseleave="mouseLeaveTriangle(triangle.id)"
-          ></polygon>
-          <polygon
-            v-if="mouseOnTriangle===true"
-            :points="mouseTrianglePoints"
-            :fill="mouseTriangleColor"
-            pointer-events="none"
           ></polygon>
 
           <line
@@ -73,6 +67,13 @@
             stroke="black"
             stroke-width="1"
           />
+          <polygon
+            v-if="mouseOnTriangle===true"
+            v-bind:class="{ pathEaterTriangleBump: pathEater.adjacent }"
+            :points="mouseTrianglePoints"
+            fill="#ff008a"
+            pointer-events="none"
+          ></polygon>
           <line
             v-for="path in pathLines"
             :x1="path.x1"
@@ -80,7 +81,7 @@
             :x2="path.x2"
             :y2="path.y2"
             stroke="#1b2a3a"
-            stroke-width="10"
+            :stroke-width="path.width + 8"
             pointer-events="none"
           />
           <line
@@ -89,8 +90,8 @@
             :y1="path.y1"
             :x2="path.x2"
             :y2="path.y2"
-            stroke="#ff008a"
-            stroke-width="2"
+            stroke="orangered"
+            :stroke-width="path.width"
             pointer-events="none"
           />
           <circle
@@ -101,6 +102,18 @@
             :cy="pathEater.y"
             :fill="pathEater.color"
             r="8"
+            pointer-events="none"
+          ></circle>
+          <circle
+            v-if="pathEater.adjacent === true"
+            class="pathEaterBumping"
+            :cx="pathEater.x"
+            :cy="pathEater.y"
+            :fill="pathEater.color"
+            r="10"
+            stroke="black"
+            stroke-width="3"
+            pointer-events="none"
           ></circle>
         </svg>
       </div>

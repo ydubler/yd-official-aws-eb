@@ -1,6 +1,7 @@
 :root {
   --pathEaterDeltaX: 100px;
   --pathEaterDeltaY: 100px;
+  --transformOrigin: 0px;
 }
 
 body {
@@ -43,7 +44,7 @@ body {
 
 @keyframes pathEaterMove {
   from {
-    fill: orangered;
+    fill: rgb(255, 68, 0);
     r: 8px;
     transform: translate(var(--pathEaterDeltaX), var(--pathEaterDeltaY));
   }
@@ -53,7 +54,7 @@ body {
   }
 
   to {
-    fill: #ff008a;
+    fill: rgb(255, 0, 138);
     r: 8px;
     transform: translate(0px, 0px);
   }
@@ -87,20 +88,20 @@ body {
   }
 }
 
-.pathEaterTriangleBump {
+.pathEaterTriangleBumping {
   animation-name: pathEaterTriangleBump;
   animation-duration: 450ms;
   animation-iteration-count: infinite;
+  transform-origin: var(--transformOrigin);
 }
 
 @keyframes pathEaterTriangleBump {
   from {
     transform: translate(0px, 0px);
-
     fill: #ff00b3;
   }
 
-  30% {
+  50% {
     transform: translate(0px, -20px);
     fill: #3cff00;
   }
@@ -115,6 +116,46 @@ body {
     fill: #ff00b3;
   }
 }
+
+.pathEaterPointsBumping {
+  animation-name: pathEaterPointsBump;
+  animation-duration: 450ms;
+  transform-origin: var(--transformOrigin);
+  animation-iteration-count: infinite;
+  fill: white;
+}
+
+@keyframes pathEaterPointsBump {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.pathBumping {
+  animation-name: pathBump;
+  transform-origin: center;
+  animation-duration: 450ms;
+  animation-iteration-count: infinite;
+}
+
+@keyframes pathBump {
+  from {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(0.97);
+  }
+
+  to {
+    transform: scale(1);
+  }
+}
+
 .navbar {
   padding-top: 20px;
   text-align: center;

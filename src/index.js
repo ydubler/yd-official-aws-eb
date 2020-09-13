@@ -291,10 +291,14 @@ var view1 = new Vue({
     appName: "Yuri Dubler Official",
     screenHeight: "100%",
     screenWidth: "100%",
-    pointToggle: true,
+    numTailTriangles: 0,
     mouseOnTriangle: false,
     mouseTrianglePoints: "",
     pathEater: {
+      point1: 0,
+      point2: 0,
+      point3: 0,
+      transformOrigin: "",
       moving: false,
       deltaX: 100,
       deltaY: 100,
@@ -737,7 +741,8 @@ var view1 = new Vue({
     mouseEnterTriangle: function(point, triangle) {
       this.pathEater.to = point;
       this.triangleMouseIn = triangle;
-      this.triangles[triangle].color = "orangered";
+
+      this.triangles[triangle].color = "#171717";
 
       // get nearest point to cursor
       let point1 = this.triangles[triangle].point1;
@@ -792,7 +797,9 @@ var view1 = new Vue({
       this.pathEater.animate = false;
     },
     pathEaterEvaluate: function() {
+      let root = document.documentElement;
       this.pathEater.moving = false;
+
       //console.log("pathEaterEvaluate()");
       if (this.pathEater.from === this.pathEater.to) {
         // we have reached the source
@@ -804,6 +811,27 @@ var view1 = new Vue({
         let point1 = this.triangles[this.triangleMouseIn].point1;
         let point2 = this.triangles[this.triangleMouseIn].point2;
         let point3 = this.triangles[this.triangleMouseIn].point3;
+
+        this.pathEater.point1 = point1;
+        this.pathEater.point2 = point2;
+        this.pathEater.point3 = point3;
+
+        let pointXAvg =
+          (this.points[point1].x +
+            this.points[point2].x +
+            this.points[point3].x) /
+          3;
+
+        let pointYAvg =
+          (this.points[point1].y +
+            this.points[point2].y +
+            this.points[point3].y) /
+          3;
+
+        root.style.setProperty(
+          "--transformOrigin",
+          pointXAvg + "px " + pointYAvg + "px "
+        );
 
         this.pathEater.trianglePoints =
           this.points[point1].x +
@@ -837,7 +865,6 @@ var view1 = new Vue({
           this.pathEater.deltaX = pathEaterDeltaX;
           this.pathEater.deltaY = pathEaterDeltaY;
 
-          let root = document.documentElement;
           root.style.setProperty("--pathEaterDeltaX", pathEaterDeltaX + "px");
           root.style.setProperty("--pathEaterDeltaY", pathEaterDeltaY + "px");
           console.log("GETTING PROPERTY VALUES");

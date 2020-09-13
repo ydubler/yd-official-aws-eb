@@ -313,8 +313,8 @@ var view1 = new Vue({
     sourceNode: 0,
     pointA: 0,
     pointB: 90,
-    longRow: 21, // Can be even or odd
-    numRows: 13, // MUST BE ODD
+    longRow: 9, // Can be even or odd
+    numRows: 9, // MUST BE ODD
     variability: 0.7,
     numPoints: -1,
     points: [

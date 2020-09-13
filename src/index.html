@@ -82,6 +82,8 @@
             stroke="#1b2a3a"
             :stroke-width="path.width + 12"
             pointer-events="none"
+            stroke-linecap="round"
+            stroke-linejoin="round"
           />
           <line
             v-for="path in pathLines"
@@ -92,6 +94,8 @@
             stroke="#D4AF37"
             :stroke-width="path.width"
             pointer-events="none"
+            stroke-linecap="round"
+            stroke-linejoin="round"
           />
 
           <g class="pathEaterPointsBumping">

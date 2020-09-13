@@ -348,8 +348,8 @@ var view1 = new Vue({
     createResizeHandler: function() {
       window.addEventListener("resize", () => {
         this.resizecalled++;
-        this.height = window.screen.availHeight;
-        this.width = window.screen.availWidth;
+        this.height = window.screen.height;
+        this.width = window.screen.width;
       });
     },
     setScreenDimensions: function() {

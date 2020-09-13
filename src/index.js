@@ -312,6 +312,7 @@ var view1 = new Vue({
     pointB: 90,
     longRow: 21, // Can be even or odd
     numRows: 13, // MUST BE ODD
+    variability: 0.4,
     numPoints: -1,
     points: [
       { x: -20, y: -20 },
@@ -361,7 +362,7 @@ var view1 = new Vue({
         if (newNumRows % 2 === 1) {
           this.numRows = newNumRows;
         } else {
-          this.numRows = newNumRows + 1;
+          this.numRows = newNumRows - 1;
         }
       } else {
         let newLongrow = Math.round(this.longRow * ratio);
@@ -404,8 +405,9 @@ var view1 = new Vue({
         let j = Math.floor((n - (2 * longRow - 1) * k) / longRow);
         let row = 2 * k + j;
 
-        let variability = 0.4;
+        let variability = this.variability;
 
+        // variability function
         let PointVariability = function(variabilityIn, delta, row, index) {
           if (
             row === 0 ||

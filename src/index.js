@@ -348,6 +348,14 @@ var view1 = new Vue({
 
   methods: {
     createResizeHandler: function() {
+      this.height = window.innerHeight;
+      this.width = window.innerWidth;
+
+      if (this.height > this.width) {
+        this.orientation = "portrait";
+      } else {
+        this.orientation = "landscape";
+      }
       window.addEventListener("resize", () => {
         this.resizecalled++;
         this.height = window.innerHeight;

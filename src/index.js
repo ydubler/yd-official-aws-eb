@@ -364,7 +364,8 @@ var view1 = new Vue({
       return check;
     },
     createResizeHandler: function() {
-      if (this.mobileCheck()) {
+      let isMobile = this.mobileCheck();
+      if (isMobile) {
         this.mobileOrDesktop = "mobile";
       } else {
         this.mobileOrDesktop = "desktop";
@@ -375,10 +376,16 @@ var view1 = new Vue({
 
       if (this.height > this.width) {
         this.orientation = "portrait";
-        this.svgOffset = 0;
+
+        if (isMobile) {
+          this.svgOffset = 0;
+        }
       } else {
         this.orientation = "landscape";
-        this.svgOffset = this.height - this.width;
+
+        if (isMobile) {
+          this.svgOffset = this.height - this.width;
+        }
       }
       window.addEventListener("resize", () => {
         this.resizecalled++;
@@ -387,10 +394,14 @@ var view1 = new Vue({
 
         if (this.height > this.width) {
           this.orientation = "portrait";
-          this.svgOffset = 0;
+          if (isMobile) {
+            this.svgOffset = 0;
+          }
         } else {
           this.orientation = "landscape";
-          this.svgOffset = this.height - this.width;
+          if (isMobile) {
+            this.svgOffset = this.height - this.width;
+          }
         }
       });
     },

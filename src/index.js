@@ -363,7 +363,7 @@ var view1 = new Vue({
       return check;
     },
     createResizeHandler: function() {
-      if (mobileCheck()) {
+      if (this.mobileCheck()) {
         this.mobileOrDesktop = "mobile";
       } else {
         this.mobileOrDesktop = "desktop";

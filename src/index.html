@@ -17,8 +17,16 @@
     <div
       id="view-one"
       class="block color-1e shortest-paths"
-      v-bind:style="{ height: (screenHeight-svgOffset)+'px'}"
+      v-bind:style="{ height: screenHeight+'px'}"
     >
+      <div class="debug">
+        Desktop/Mobile: {{mobileOrDesktop}}<br />
+        Orientation: {{orientation}}<br />
+        Resize() Called:{{resizecalled}}<br />
+        SVGOffset: {{svgOffset}}<br />
+        Width: {{width}}<br />
+        Height: {{ height}}
+      </div>
       <div class="navbar">
         <div class="navbar-link inline-block">
           Resume
@@ -26,10 +34,10 @@
         <div class="navbar-link inline-block">Portfolio</div>
         <div class="navbar-link inline-block">Sidearms</div>
       </div>
+
       <div class="intro-text font-Lato">
-        Software Engineer.{{orientation}} | {{resizecalled}}<br />{{mobileOrDesktop}}
-        / {{svgOffset}}<br />Web Developer. <br />height:{{height}} /
-        width:{{width}}<br />
+        Software Engineer.<br />
+        <br />Web Developer.<br /><br />
         <div
           class="intro-text-paladin"
           v-bind:class="{ pathEaterTriangleBumping: pathEater.adjacent }"
@@ -37,10 +45,7 @@
           Code Paladin.
         </div>
       </div>
-      <div
-        class="shortest-paths"
-        v-bind:style="{ height: (screenHeight-svgOffset) + 'px'}"
-      >
+      <div class="shortest-paths" v-bind:style="{ height: screenHeight+ 'px'}">
         <svg
           version="1.1"
           baseProfile="full"

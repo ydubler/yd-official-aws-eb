@@ -11,6 +11,11 @@ body {
   margin: 0px;
 }
 
+.debug {
+  display: inline-block;
+  position: fixed;
+}
+
 .block {
   display: block;
 }

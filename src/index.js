@@ -291,6 +291,7 @@ var view1 = new Vue({
     appName: "Yuri Dubler Official",
     width: 0,
     height: 0,
+    orientation: "?",
     resizecalled: 0,
     screenHeight: "100%",
     screenWidth: "100%",
@@ -351,6 +352,12 @@ var view1 = new Vue({
         this.resizecalled++;
         this.height = window.screen.availHeight;
         this.width = window.screen.availWidth;
+
+        if (this.height > this.width) {
+          this.orientation = "portrait";
+        } else {
+          this.orientation = "landscape";
+        }
       });
     },
     setScreenDimensions: function() {

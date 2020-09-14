@@ -296,6 +296,7 @@ var view1 = new Vue({
     resizecalled: 0,
     screenHeight: "100%",
     screenWidth: "100%",
+    svgOffset: 0,
     numTailTriangles: 0,
     mouseOnTriangle: false,
     mouseTrianglePoints: "",
@@ -374,8 +375,10 @@ var view1 = new Vue({
 
       if (this.height > this.width) {
         this.orientation = "portrait";
+        this.svgOffset = 0;
       } else {
         this.orientation = "landscape";
+        this.svgOffset = this.height - this.width;
       }
       window.addEventListener("resize", () => {
         this.resizecalled++;
@@ -384,8 +387,10 @@ var view1 = new Vue({
 
         if (this.height > this.width) {
           this.orientation = "portrait";
+          this.svgOffset = 0;
         } else {
           this.orientation = "landscape";
+          this.svgOffset = this.height - this.width;
         }
       });
     },

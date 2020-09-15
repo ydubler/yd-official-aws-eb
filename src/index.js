@@ -460,13 +460,13 @@ var view1 = new Vue({
         this.introText.fontSize = 40 + "px";
 
         if (this.isPortrait) {
+          this.introText.text3MarginBottom = 3 * 40 + "px";
+          this.introText.text2MarginBottom = 4.5 * 40 + "px";
+          this.introText.text1MarginBottom = 6 * 40 + "px";
+        } else {
           this.introText.text3MarginBottom = 2 * 40 + "px";
           this.introText.text2MarginBottom = 3.5 * 40 + "px";
           this.introText.text1MarginBottom = 5 * 40 + "px";
-        } else {
-          this.introText.text3MarginBottom = 1 * 40 + "px";
-          this.introText.text2MarginBottom = 2.5 * 40 + "px";
-          this.introText.text1MarginBottom = 4 * 40 + "px";
         }
       } else {
         this.introText.fontSize = 80 + "px";
@@ -474,6 +474,7 @@ var view1 = new Vue({
         this.introText.text2MarginBottom = 2.5 * 80 + "px";
         this.introText.text1MarginBottom = 4 * 80 + "px";
       }
+
       window.addEventListener("resize", () => {
         this.resizecalled++;
         this.height = window.innerHeight;
@@ -526,13 +527,13 @@ var view1 = new Vue({
           this.introText.fontSize = 40 + "px";
 
           if (this.isPortrait) {
+            this.introText.text3MarginBottom = 3 * 40 + "px";
+            this.introText.text2MarginBottom = 4.5 * 40 + "px";
+            this.introText.text1MarginBottom = 6 * 40 + "px";
+          } else {
             this.introText.text3MarginBottom = 2 * 40 + "px";
             this.introText.text2MarginBottom = 3.5 * 40 + "px";
             this.introText.text1MarginBottom = 5 * 40 + "px";
-          } else {
-            this.introText.text3MarginBottom = 1 * 40 + "px";
-            this.introText.text2MarginBottom = 2.5 * 40 + "px";
-            this.introText.text1MarginBottom = 4 * 40 + "px";
           }
         } else {
           this.introText.fontSize = 80 + "px";

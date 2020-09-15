@@ -94,13 +94,13 @@
               v-for="point in points"
               :cx="point.x"
               :cy="point.y"
-              r="5"
-              fill="black"
-              stroke="#797979"
-              stroke-width="1"
+              r="3"
+              fill="white"
+              stroke="#111111"
+              stroke-width="3"
             />
 
-            <line
+            <!-- <line
               v-for="path in pathLines"
               :x1="path.x1"
               :y1="path.y1"
@@ -120,6 +120,19 @@
               :y2="path.y2"
               stroke="#D4AF37"
               :stroke-width="path.width"
+              pointer-events="none"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            /> -->
+
+            <line
+              v-for="path in pathLines"
+              :x1="path.x1"
+              :y1="path.y1"
+              :x2="path.x2"
+              :y2="path.y2"
+              stroke="white"
+              stroke-width="2"
               pointer-events="none"
               stroke-linecap="round"
               stroke-linejoin="round"

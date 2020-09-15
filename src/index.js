@@ -422,7 +422,7 @@ var view1 = new Vue({
           this.screenHeight = screenHeightComputed;
 
           // center svg
-          this.svgOffsetX = (this.screenWidth - this.width) / 2;
+          this.svgOffsetX = (this.screenHeight - this.width) / 2;
           this.svgOffsetY = 0;
           root.style.setProperty("--spSvgOffsetX", -this.svgOffsetX + "px");
           root.style.setProperty("--spSvgOffsetY", -this.svgOffsetY + "px");
@@ -466,7 +466,8 @@ var view1 = new Vue({
             this.screenHeight = screenHeightComputed;
 
             // center svg
-            this.svgOffsetX = (this.screenWidth - this.width) / 2;
+            // using screenHeight because sH and sW switch on mobile devices
+            this.svgOffsetX = (this.screenHeight - this.width) / 2;
             this.svgOffsetY = 0;
             root.style.setProperty("--spSvgOffsetX", -this.svgOffsetX + "px");
             root.style.setProperty("--spSvgOffsetY", -this.svgOffsetY + "px");

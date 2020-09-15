@@ -369,7 +369,7 @@ var view1 = new Vue({
       this.screenWidth = screenWidthComputed;
       this.screenHeight = screenHeightComputed;
 
-      //Mobile solution
+      // Mobile solution
       if (this.isMobile) {
         if (screenHeightComputed > screenWidthComputed) {
           this.screenWidth = screenHeightComputed;

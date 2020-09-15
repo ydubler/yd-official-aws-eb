@@ -199,6 +199,7 @@ body {
   position: fixed;
   z-index: 1;
   color: white;
+  background-color: #111111;
   pointer-events: none;
 }
 
@@ -217,7 +218,6 @@ body {
   color: white;
   pointer-events: none;
   z-index: 1;
-  height: 100%;
 }
 
 .intro-text-1 {

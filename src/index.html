@@ -38,7 +38,11 @@
         <div class="navbar-link inline-block">Sidearms</div>
       </div>
 
-      <div id="view1-intro-text" class="intro-text">
+      <div
+        id="view1-intro-text"
+        class="intro-text"
+        v-bind:style="{ height: screenHeight + 'px'}"
+      >
         <div
           class="intro-text-1 font-Lato"
           v-bind:style="{ fontSize: introText.fontSize, marginBottom: introText.text1MarginBottom }"

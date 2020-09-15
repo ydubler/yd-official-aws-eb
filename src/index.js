@@ -288,7 +288,6 @@ function findShortestPathDijkstra(sourcePoint) {
 var view1 = new Vue({
   el: name,
   data: {
-    appName: "Yuri Dubler Official",
     width: 0,
     height: 0,
     mobileOrDesktop: "?",

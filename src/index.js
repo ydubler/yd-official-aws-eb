@@ -393,8 +393,8 @@ var view1 = new Vue({
         if (isMobile) {
           this.svgOffset = this.height - this.width;
 
-          this.screenWidth = screenHeightComputed;
-          this.screenHeight = screenWidthComputed;
+          this.screenWidth = screenWidthComputed;
+          this.screenHeight = screenHeightComputed;
         }
       }
 

@@ -39,11 +39,21 @@
       </div>
 
       <div id="view1-intro-text" class="intro-text">
-        <div class="intro-text-1 font-Lato">Software Engineer.</div>
-        <div class="intro-text-2 font-Lato">Web Developer.</div>
+        <div
+          class="intro-text-1 font-Lato"
+          v-bind:style="{ fontSize: introText.fontSize }"
+        >
+          Software Engineer.
+        </div>
+        <div
+          class="intro-text-2 font-Lato"
+          v-bind:style="{ fontSize: introText.fontSize }"
+        >
+          Web Developer.
+        </div>
         <div
           class="intro-text-3"
-          v-bind:class="{ pathEaterTriangleBumping: pathEater.adjacent }"
+          v-bind:style="{ fontSize: introText.fontSize }"
         >
           Code Paladin.
         </div>

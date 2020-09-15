@@ -214,22 +214,37 @@ body {
   display: inline-block;
   text-align: center;
   width: 100%;
-  font-size: 80px;
   color: white;
   pointer-events: none;
   z-index: 1;
+  height: 100%;
 }
 
 .intro-text-1 {
-  margin-top: 100px;
+  position: absolute;
+  text-align: center;
+  display: block;
+  margin-bottom: 250px;
+  bottom: 0;
+  width: 100%;
 }
 
 .intro-text-2 {
-  margin-top: 100px;
+  position: absolute;
+  text-align: center;
+  display: block;
+  margin-bottom: 150px;
+  bottom: 0;
+  width: 100%;
 }
 
 .intro-text-3 {
-  margin-top: 100px;
+  position: absolute;
+  text-align: center;
+  display: block;
+  margin-bottom: 50px;
+  bottom: 0;
+  width: 100%;
   background: -webkit-linear-gradient(#977d27, #ffe865);
   background-clip: text;
   -webkit-background-clip: text;

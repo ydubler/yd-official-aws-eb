@@ -458,16 +458,22 @@ var view1 = new Vue({
       // set intro-text font-size
       if (this.width < 700) {
         this.introText.fontSize = 40 + "px";
-        this.introText.text3MarginBottom = 1 * 40 + "px";
-        this.introText.text2MarginBottom = 2.5 * 40 + "px";
-        this.introText.text1MarginBottom = 4 * 40 + "px";
+
+        if (this.isPortrait) {
+          this.introText.text3MarginBottom = 2 * 40 + "px";
+          this.introText.text2MarginBottom = 3.5 * 40 + "px";
+          this.introText.text1MarginBottom = 5 * 40 + "px";
+        } else {
+          this.introText.text3MarginBottom = 1 * 40 + "px";
+          this.introText.text2MarginBottom = 2.5 * 40 + "px";
+          this.introText.text1MarginBottom = 4 * 40 + "px";
+        }
       } else {
         this.introText.fontSize = 80 + "px";
         this.introText.text3MarginBottom = 1 * 80 + "px";
         this.introText.text2MarginBottom = 2.5 * 80 + "px";
         this.introText.text1MarginBottom = 4 * 80 + "px";
       }
-
       window.addEventListener("resize", () => {
         this.resizecalled++;
         this.height = window.innerHeight;
@@ -518,9 +524,16 @@ var view1 = new Vue({
         // set intro-text font-size
         if (this.width < 700) {
           this.introText.fontSize = 40 + "px";
-          this.introText.text3MarginBottom = 1 * 40 + "px";
-          this.introText.text2MarginBottom = 2.5 * 40 + "px";
-          this.introText.text1MarginBottom = 4 * 40 + "px";
+
+          if (this.isPortrait) {
+            this.introText.text3MarginBottom = 2 * 40 + "px";
+            this.introText.text2MarginBottom = 3.5 * 40 + "px";
+            this.introText.text1MarginBottom = 5 * 40 + "px";
+          } else {
+            this.introText.text3MarginBottom = 1 * 40 + "px";
+            this.introText.text2MarginBottom = 2.5 * 40 + "px";
+            this.introText.text1MarginBottom = 4 * 40 + "px";
+          }
         } else {
           this.introText.fontSize = 80 + "px";
           this.introText.text3MarginBottom = 1 * 80 + "px";

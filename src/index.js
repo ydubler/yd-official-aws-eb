@@ -880,8 +880,7 @@ var view1 = new Vue({
 
       this.pathLines = path;
     },
-    mouseEnterTriangle: function(point, triangle) {
-      this.pathEater.to = point;
+    mouseEnterTriangle: function(triangle) {
       this.triangleMouseIn = triangle;
 
       this.triangles[triangle].color = "#171717";

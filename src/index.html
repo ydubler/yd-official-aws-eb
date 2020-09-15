@@ -59,10 +59,10 @@
           <g class="shortest-paths-svg-offset">
             <polygon
               v-for="triangle in triangles"
-              v-on:click="mouseEnterTriangle(triangle.point1, triangle.id)"
+              v-on:click="mouseEnterTriangle(triangle.id)"
               :points="triangle.points"
               :fill="triangle.color"
-              @mouseenter="mouseEnterTriangle(triangle.point1, triangle.id)"
+              @mouseenter="mouseEnterTriangle(triangle.id)"
               @mouseleave="mouseLeaveTriangle(triangle.id)"
             ></polygon>
 

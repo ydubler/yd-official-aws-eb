@@ -295,6 +295,8 @@ var view1 = new Vue({
     screenHeight: "100%",
     screenWidth: "100%",
     resizecalled: 0,
+    svgWidth: 0,
+    svgHeight: 0,
     svgOffset: 0,
     numTailTriangles: 0,
     mouseOnTriangle: false,
@@ -369,9 +371,15 @@ var view1 = new Vue({
       this.screenWidth = screenWidthComputed;
       this.screenHeight = screenHeightComputed;
 
+      this.svgWidth = screenWidthComputed;
+      this.svgHeight = screenHeightComputed;
+
       // Mobile solution
       if (this.isMobile) {
         if (screenHeightComputed > screenWidthComputed) {
+          this.svgWidth = screenHeightComputed;
+          this.svgHeight = screenHeightComputed;
+
           this.screenWidth = screenHeightComputed;
           this.screenHeight = screenHeightComputed;
         } else {
@@ -449,11 +457,11 @@ var view1 = new Vue({
       });
     },
     balanceRowsAndCols: function() {
-      if (Math.abs(this.screenWidth - this.screenHeight) < Number.EPSILON) {
+      if (Math.abs(this.svgWidth - this.svgHeight) < Number.EPSILON) {
         this.longRow = this.numRows;
       } else {
-        const deltaX = this.screenWidth / (2 * this.longRow - 3);
-        const deltaY = this.screenHeight / (this.numRows - 2);
+        const deltaX = this.svgWidth / (2 * this.longRow - 3);
+        const deltaY = this.svgHeight / (this.numRows - 2);
 
         let ratio = deltaX / deltaY;
 
@@ -491,10 +499,10 @@ var view1 = new Vue({
         Math.floor(numRows / 2) * (longRow - 1);
       console.log("\tnumPoints= " + numPoints);
 
-      const deltaX = this.screenWidth / (2 * longRow - 3);
-      const deltaY = this.screenHeight / (numRows - 2);
-      console.log("Screenheight:" + this.screenHeight);
-      console.log("screenwidth:" + this.screenWidth);
+      const deltaX = this.svgWidth / (2 * longRow - 3);
+      const deltaY = this.svgHeight / (numRows - 2);
+      console.log("svgWidth:" + this.screenHeight);
+      console.log("svgHeight:" + this.screenWidth);
       console.log("\tdeltaX = " + deltaX);
       console.log("\tdeltaY = " + deltaY);
 

@@ -364,6 +364,14 @@ var view1 = new Vue({
       })(navigator.userAgent || navigator.vendor || window.opera);
       return check;
     },
+    setMobileOrDesktop: function() {
+      let isMobile = this.mobileCheck();
+      if (isMobile) {
+        this.mobileOrDesktop = "mobile";
+      } else {
+        this.mobileOrDesktop = "desktop";
+      }
+    },
     setScreenDimensions: function() {
       console.log("setScreenDimensions()");
       let screenHeightComputed = window.screen.availHeight;
@@ -372,7 +380,7 @@ var view1 = new Vue({
       this.screenHeight = screenHeightComputed;
 
       this.svgWidth = screenWidthComputed;
-      this.svgHeight = screenWidthComputed;
+      this.svgHeight = screenHeightComputed;
 
       // Mobile solution
       if (this.isMobile) {
@@ -383,19 +391,15 @@ var view1 = new Vue({
           this.screenWidth = screenHeightComputed;
           this.screenHeight = screenHeightComputed;
         } else {
+          this.svgWidth = screenWidthComputed;
+          this.svgHeight = screenWidthComputed;
+
           this.screenHeight = screenHeightComputed;
           this.screenWidth = screenWidthComputed;
         }
       }
     },
     createResizeHandler: function() {
-      let isMobile = this.mobileCheck();
-      if (isMobile) {
-        this.mobileOrDesktop = "mobile";
-      } else {
-        this.mobileOrDesktop = "desktop";
-      }
-
       this.height = window.innerHeight;
       this.width = window.innerWidth;
       let screenHeightComputed = window.screen.availHeight;
@@ -1040,6 +1044,7 @@ var view1 = new Vue({
     },
   },
   created: function() {
+    this.setMobileOrDesktop();
     this.setScreenDimensions();
     this.createResizeHandler();
     this.balanceRowsAndCols();

@@ -288,13 +288,13 @@ function findShortestPathDijkstra(sourcePoint) {
 var view1 = new Vue({
   el: name,
   data: {
-    width: 0,
-    height: 0,
     mobileOrDesktop: "?",
     orientation: "?",
-    resizecalled: 0,
+    width: 0,
+    height: 0,
     screenHeight: "100%",
     screenWidth: "100%",
+    resizecalled: 0,
     svgOffset: 0,
     numTailTriangles: 0,
     mouseOnTriangle: false,
@@ -319,8 +319,8 @@ var view1 = new Vue({
     sourceNode: 0,
     pointA: 0,
     pointB: 90,
-    longRow: 9, // Can be even or odd
-    numRows: 9, // MUST BE ODD
+    longRow: 15, // Can be even or odd
+    numRows: 15, // MUST BE ODD
     variability: 0.7,
     numPoints: -1,
     points: [
@@ -372,20 +372,32 @@ var view1 = new Vue({
 
       this.height = window.innerHeight;
       this.width = window.innerWidth;
+      let screenHeightComputed = window.screen.availHeight;
+      let screenWidthComputed = window.screen.availWidth;
 
+      // PORTRAIT
       if (this.height > this.width) {
         this.orientation = "portrait";
 
         if (isMobile) {
           this.svgOffset = 0;
+
+          this.screenWidth = screenHeightComputed;
+          this.screenHeight = screenWidthComputed;
         }
-      } else {
+      }
+      // LANDSCAPE
+      else {
         this.orientation = "landscape";
 
         if (isMobile) {
           this.svgOffset = this.height - this.width;
+
+          this.screenWidth = screenWidthComputed;
+          this.screenHeight = screenHeightComputed;
         }
       }
+
       window.addEventListener("resize", () => {
         this.resizecalled++;
         this.height = window.innerHeight;
@@ -393,18 +405,27 @@ var view1 = new Vue({
 
         let screenHeightComputed = window.screen.availHeight;
         let screenWidthComputed = window.screen.availWidth;
-        this.screenWidth = screenWidthComputed;
-        this.screenHeight = screenHeightComputed;
 
+        // PORTRAIT
         if (this.height > this.width) {
           this.orientation = "portrait";
+
           if (isMobile) {
             this.svgOffset = 0;
+
+            this.screenWidth = screenHeightComputed;
+            this.screenHeight = screenWidthComputed;
           }
-        } else {
+        }
+        // LANDSCAPE
+        else {
           this.orientation = "landscape";
+
           if (isMobile) {
             this.svgOffset = this.height - this.width;
+
+            this.screenWidth = screenWidthComputed;
+            this.screenHeight = screenHeightComputed;
           }
         }
       });

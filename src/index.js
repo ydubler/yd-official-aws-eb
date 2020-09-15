@@ -470,9 +470,9 @@ var view1 = new Vue({
         }
       } else {
         this.introText.fontSize = 80 + "px";
-        this.introText.text3MarginBottom = 1 * 80 + "px";
-        this.introText.text2MarginBottom = 2.5 * 80 + "px";
-        this.introText.text1MarginBottom = 4 * 80 + "px";
+        this.introText.text3MarginBottom = 120 + "px";
+        this.introText.text2MarginBottom = 120 + 1.5 * 80 + "px";
+        this.introText.text1MarginBottom = 120 + 3 * 80 + "px";
       }
 
       window.addEventListener("resize", () => {

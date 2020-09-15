@@ -341,16 +341,10 @@ var view1 = new Vue({
     },
     // INTRO TEXT SIZE AND SPACING PROPERTIES
     introText: {
-      fontSize: 80,
-      text1X: 0,
-      text1Y: 0,
-      text1FontSize: 80,
-      text2X: 0,
-      text2Y: 0,
-      text1FontSize: 80,
-      text3X: 0,
-      text3Y: 0,
-      text1FontSize: 80,
+      fontSize: "80px",
+      text1MarginBottom: "50px",
+      text2MarginBottom: "150px",
+      text3MarginBottom: "250px",
     },
   },
   computed: {
@@ -464,8 +458,14 @@ var view1 = new Vue({
       // set intro-text font-size
       if (this.width < 700) {
         this.introText.fontSize = 40 + "px";
+        this.introText.text3MarginBottom = 1 * 40 + "px";
+        this.introText.text2MarginBottom = 2 * 40 + "px";
+        this.introText.text1MarginBottom = 3 * 40 + "px";
       } else {
         this.introText.fontSize = 80 + "px";
+        this.introText.text3MarginBottom = 1 * 80 + "px";
+        this.introText.text2MarginBottom = 2 * 80 + "px";
+        this.introText.text1MarginBottom = 3 * 80 + "px";
       }
 
       window.addEventListener("resize", () => {
@@ -518,8 +518,14 @@ var view1 = new Vue({
         // set intro-text font-size
         if (this.width < 700) {
           this.introText.fontSize = 40 + "px";
+          this.introText.text3MarginBottom = 1 * 40 + "px";
+          this.introText.text2MarginBottom = 2 * 40 + "px";
+          this.introText.text1MarginBottom = 3 * 40 + "px";
         } else {
           this.introText.fontSize = 80 + "px";
+          this.introText.text3MarginBottom = 1 * 80 + "px";
+          this.introText.text2MarginBottom = 2 * 80 + "px";
+          this.introText.text1MarginBottom = 3 * 80 + "px";
         }
       });
     },

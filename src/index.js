@@ -288,6 +288,8 @@ function findShortestPathDijkstra(sourcePoint) {
 var view1 = new Vue({
   el: name,
   data: {
+    isMobile: false,
+    isPortrait: false,
     mobileOrDesktop: "?",
     orientation: "?",
     width: 0,
@@ -416,6 +418,7 @@ var view1 = new Vue({
       // PORTRAIT
       if (this.height > this.width) {
         this.orientation = "portrait";
+        this.isPortrait = true;
 
         if (this.isMobile) {
           this.screenWidth = screenWidthComputed;
@@ -431,6 +434,7 @@ var view1 = new Vue({
       // LANDSCAPE
       else {
         this.orientation = "landscape";
+        this.isPortrait = false;
 
         if (this.isMobile) {
           this.screenWidth = screenHeightComputed;
@@ -460,6 +464,7 @@ var view1 = new Vue({
         // PORTRAIT
         if (this.height > this.width) {
           this.orientation = "portrait";
+          this.isPortrait = true;
 
           if (this.isMobile) {
             this.screenWidth = screenWidthComputed;
@@ -476,6 +481,7 @@ var view1 = new Vue({
         // LANDSCAPE
         else {
           this.orientation = "landscape";
+          this.isPortrait = false;
 
           if (this.isMobile) {
             this.screenWidth = screenHeightComputed;
@@ -574,11 +580,11 @@ var view1 = new Vue({
             x:
               2 * deltaX * index +
               PointVariability(variability, deltaX, row, index) -
-              deltaX / 2,
+              deltaX,
             y:
               deltaY * row +
               PointVariability(variability, deltaY, row, index) -
-              deltaY / 2,
+              deltaY,
             row: row,
             index: index,
             id: n,
@@ -589,11 +595,11 @@ var view1 = new Vue({
             x:
               2 * deltaX * (index + 0.5) +
               PointVariability(variability, deltaX, row, index) -
-              deltaX / 2,
+              deltaX,
             y:
               deltaY * row +
               PointVariability(variability, deltaY, row, index) -
-              deltaY / 2,
+              deltaY,
             row: row,
             index: index,
             id: n,
@@ -964,112 +970,104 @@ var view1 = new Vue({
       this.pathEater.animate = false;
     },
     pathEaterEvaluate: function() {
-      let root = document.documentElement;
-      this.pathEater.moving = false;
+      let userScrollY = window.pageYOffset;
 
-      //console.log("pathEaterEvaluate()");
-      if (this.pathEater.from === this.pathEater.to) {
-        // we have reached the source
-        this.pathEater.adjacent = true;
-        this.pathEater.color = "#ff008a";
+      // make the patheater stop if the user has scrolled beyond the shortest paths
+      if (userScrollY > this.screenHeight) {
+        console.log("user has scrolled beyond");
+      } else {
+        let root = document.documentElement;
         this.pathEater.moving = false;
 
-        // get nearest point to cursor
-        let point1 = this.triangles[this.triangleMouseIn].point1;
-        let point2 = this.triangles[this.triangleMouseIn].point2;
-        let point3 = this.triangles[this.triangleMouseIn].point3;
+        //console.log("pathEaterEvaluate()");
+        if (this.pathEater.from === this.pathEater.to) {
+          // we have reached the source
+          this.pathEater.adjacent = true;
+          this.pathEater.color = "#ff008a";
+          this.pathEater.moving = false;
 
-        this.pathEater.point1 = point1;
-        this.pathEater.point2 = point2;
-        this.pathEater.point3 = point3;
+          // get nearest point to cursor
+          let point1 = this.triangles[this.triangleMouseIn].point1;
+          let point2 = this.triangles[this.triangleMouseIn].point2;
+          let point3 = this.triangles[this.triangleMouseIn].point3;
 
-        let pointXAvg =
-          (this.points[point1].x +
+          this.pathEater.point1 = point1;
+          this.pathEater.point2 = point2;
+          this.pathEater.point3 = point3;
+
+          let pointXAvg =
+            (this.points[point1].x +
+              this.points[point2].x +
+              this.points[point3].x) /
+            3;
+
+          let pointYAvg =
+            (this.points[point1].y +
+              this.points[point2].y +
+              this.points[point3].y) /
+            3;
+
+          root.style.setProperty(
+            "--transformOrigin",
+            pointXAvg + "px " + pointYAvg + "px "
+          );
+
+          // root.style.setProperty(
+          //   "--triangleCenterX",
+          //   this.pathEater.x - pointXAvg
+          // );
+          // root.style.setProperty(
+          //   "--triangleCenterY",
+          //   this.pathEater.y - pointYAvg
+          // );
+
+          // this.pathEater.x = pointXAvg;
+          // this.pathEater.y = pointYAvg;
+
+          this.pathEater.trianglePoints =
+            this.points[point1].x +
+            "," +
+            this.points[point1].y +
+            " " +
             this.points[point2].x +
-            this.points[point3].x) /
-          3;
-
-        let pointYAvg =
-          (this.points[point1].y +
+            "," +
             this.points[point2].y +
-            this.points[point3].y) /
-          3;
-
-        root.style.setProperty(
-          "--transformOrigin",
-          pointXAvg + "px " + pointYAvg + "px "
-        );
-
-        // root.style.setProperty(
-        //   "--triangleCenterX",
-        //   this.pathEater.x - pointXAvg
-        // );
-        // root.style.setProperty(
-        //   "--triangleCenterY",
-        //   this.pathEater.y - pointYAvg
-        // );
-
-        // this.pathEater.x = pointXAvg;
-        // this.pathEater.y = pointYAvg;
-
-        this.pathEater.trianglePoints =
-          this.points[point1].x +
-          "," +
-          this.points[point1].y +
-          " " +
-          this.points[point2].x +
-          "," +
-          this.points[point2].y +
-          " " +
-          this.points[point3].x +
-          "," +
-          this.points[point3].y;
-      } else {
-        this.pathEater.adjacent = false;
-        this.pathEater.color = "orangered";
-
-        if (this.pathLines.length >= 1) {
-          // Get the new source (the point the path-eater is moving to)
-          let newSource = this.pathLines.pop().point1;
-
-          // Set the CSS property so the animation works correctly
-          let pathEaterDeltaX = this.pathEater.x - this.points[newSource].x;
-          let pathEaterDeltaY = this.pathEater.y - this.points[newSource].y;
-
-          console.log("creating pathEaterDeltas:");
-          console.log("0> pathEaterDeltaX = " + pathEaterDeltaX);
-          console.log("0> pathEaterDeltaY = " + pathEaterDeltaY);
-
-          console.log("SETTING PROPERTY VALUES ON ROOT");
-          this.pathEater.deltaX = pathEaterDeltaX;
-          this.pathEater.deltaY = pathEaterDeltaY;
-
-          root.style.setProperty("--pathEaterDeltaX", pathEaterDeltaX + "px");
-          root.style.setProperty("--pathEaterDeltaY", pathEaterDeltaY + "px");
-          console.log("GETTING PROPERTY VALUES");
-
-          console.log(
-            "-----> pedeltax = " +
-              root.style.getPropertyValue("--pathEaterDeltaX")
-          );
-          console.log(
-            "-----> pedeltay = " +
-              root.style.getPropertyValue("--pathEaterDeltaY")
-          );
-
-          this.pathEater.x = this.points[newSource].x;
-          this.pathEater.y = this.points[newSource].y;
-          this.pathEater.moving = true;
-
-          this.pathEater.from = newSource;
+            " " +
+            this.points[point3].x +
+            "," +
+            this.points[point3].y;
+        } else {
           this.pathEater.adjacent = false;
-          this.pathEater.animate = false;
+          this.pathEater.color = "orangered";
 
-          if (this.pathLines.length === 0) {
-            this.pathEater.color = "#ff008a";
+          if (this.pathLines.length >= 1) {
+            // Get the new source (the point the path-eater is moving to)
+            let newSource = this.pathLines.pop().point1;
+
+            // Set the CSS property so the animation works correctly
+            let pathEaterDeltaX = this.pathEater.x - this.points[newSource].x;
+            let pathEaterDeltaY = this.pathEater.y - this.points[newSource].y;
+
+            this.pathEater.deltaX = pathEaterDeltaX;
+            this.pathEater.deltaY = pathEaterDeltaY;
+
+            root.style.setProperty("--pathEaterDeltaX", pathEaterDeltaX + "px");
+            root.style.setProperty("--pathEaterDeltaY", pathEaterDeltaY + "px");
+
+            this.pathEater.x = this.points[newSource].x;
+            this.pathEater.y = this.points[newSource].y;
+            this.pathEater.moving = true;
+
+            this.pathEater.from = newSource;
+            this.pathEater.adjacent = false;
+            this.pathEater.animate = false;
+
+            if (this.pathLines.length === 0) {
+              this.pathEater.color = "#ff008a";
+            }
+
+            setTimeout(() => (this.pathEater.moving = false), 450);
           }
-
-          setTimeout(() => (this.pathEater.moving = false), 450);
         }
       }
     },

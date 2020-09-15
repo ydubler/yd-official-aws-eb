@@ -391,6 +391,11 @@ var view1 = new Vue({
         this.height = window.innerHeight;
         this.width = window.innerWidth;
 
+        let screenHeightComputed = window.screen.availHeight;
+        let screenWidthComputed = window.screen.availWidth;
+        this.screenWidth = screenWidthComputed;
+        this.screenHeight = screenHeightComputed;
+
         if (this.height > this.width) {
           this.orientation = "portrait";
           if (isMobile) {
@@ -406,16 +411,21 @@ var view1 = new Vue({
     },
     setScreenDimensions: function() {
       console.log("setScreenDimensions()");
-      screenHeightComputed = window.screen.availHeight;
-      screenWidthComputed = window.screen.availWidth;
+      let screenHeightComputed = window.screen.availHeight;
+      let screenWidthComputed = window.screen.availWidth;
+      this.screenWidth = screenWidthComputed;
+      this.screenHeight = screenHeightComputed;
 
-      if (screenHeightComputed > screenWidthComputed) {
-        this.screenWidth = screenHeightComputed;
-        this.screenHeight = screenHeightComputed;
-      } else {
-        this.screenHeight = screenHeightComputed;
-        this.screenWidth = screenWidthComputed;
-      }
+      // Mobile solution
+      // if (this.isMobile) {
+      //   if (screenHeightComputed > screenWidthComputed) {
+      //     this.screenWidth = screenHeightComputed;
+      //     this.screenHeight = screenHeightComputed;
+      //   } else {
+      //     this.screenHeight = screenHeightComputed;
+      //     this.screenWidth = screenWidthComputed;
+      //   }
+      // }
     },
     balanceRowsAndCols: function() {
       if (Math.abs(this.screenWidth - this.screenHeight) < Number.EPSILON) {

@@ -382,8 +382,8 @@ var view1 = new Vue({
         if (isMobile) {
           this.svgOffset = 0;
 
-          this.screenWidth = screenWidthComputed;
-          this.screenHeight = screenHeightComputed;
+          this.screenWidth = screenHeightComputed;
+          this.screenHeight = screenWidthComputed;
         }
       }
       // LANDSCAPE
@@ -393,8 +393,8 @@ var view1 = new Vue({
         if (isMobile) {
           this.svgOffset = this.height - this.width;
 
-          this.screenWidth = screenWidthComputed;
-          this.screenHeight = screenHeightComputed;
+          this.screenWidth = screenHeightComputed;
+          this.screenHeight = screenWidthComputed;
         }
       }
 

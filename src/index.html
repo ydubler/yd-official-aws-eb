@@ -23,7 +23,8 @@
         Desktop/Mobile: {{mobileOrDesktop}}<br />
         Orientation: {{orientation}}<br />
         Resize() Called:{{resizecalled}}<br />
-        SVGOffset: {{svgOffset}}<br />
+        SVGOffsetX: {{svgOffsetX}}<br />
+        SVGOffsetY: {{svgOffsetY}}<br />
         innerWidth: {{width}}<br />
         innerHeight: {{ height}}<br />
         width: {{ screenWidth }}<br />
@@ -51,8 +52,9 @@
         <svg
           version="1.1"
           baseProfile="full"
-          v-bind:style="{ height: screenHeight + 'px'}"
           xmlns="http://www.w3.org/2000/svg"
+          class="shortest-paths-svg-offset"
+          v-bind:style="{ height: screenHeight + 'px'}"
           width="100%"
         >
           <polygon

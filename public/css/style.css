@@ -44,6 +44,10 @@ body {
   color: #a6a6a6;
 }
 
+.shortest-paths-svg-offset {
+  transform: translate(-(var(--spSvgOffsetX)), -(var(--spSvgOffsetY)));
+}
+
 .pathEater {
   animation-name: pathEaterMove;
   animation-duration: 450ms;

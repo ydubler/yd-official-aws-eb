@@ -297,7 +297,8 @@ var view1 = new Vue({
     resizecalled: 0,
     svgWidth: 0,
     svgHeight: 0,
-    svgOffset: 0,
+    svgOffsetX: 0,
+    svgOffsetY: 0,
     numTailTriangles: 0,
     mouseOnTriangle: false,
     mouseTrianglePoints: "",
@@ -406,15 +407,25 @@ var view1 = new Vue({
       let screenHeightComputed = window.screen.availHeight;
       let screenWidthComputed = window.screen.availWidth;
 
+      let root = document.documentElement;
+      this.svgOffsetX = (this.screenWidth - this.width) / 2;
+      this.svgOffsetY = 0;
+      root.style.setProperty("--spSvgOffsetX", this.svgOffsetX + "px");
+      root.style.setProperty("--spSvgOffsetY", this.svgOffsetY + "px");
+
       // PORTRAIT
       if (this.height > this.width) {
         this.orientation = "portrait";
 
         if (this.isMobile) {
-          this.svgOffset = 0;
-
           this.screenWidth = screenWidthComputed;
           this.screenHeight = screenHeightComputed;
+
+          // center svg
+          this.svgOffsetX = (this.screenWidth - this.width) / 2;
+          this.svgOffsetY = 0;
+          root.style.setProperty("--spSvgOffsetX", this.svgOffsetX + "px");
+          root.style.setProperty("--spSvgOffsetY", this.svgOffsetY + "px");
         }
       }
       // LANDSCAPE
@@ -422,10 +433,13 @@ var view1 = new Vue({
         this.orientation = "landscape";
 
         if (this.isMobile) {
-          this.svgOffset = this.height - this.width;
-
           this.screenWidth = screenWidthComputed;
           this.screenHeight = screenHeightComputed;
+
+          this.svgOffsetX = 0;
+          this.svgOffsetY = 0;
+          root.style.setProperty("--spSvgOffsetX", this.svgOffsetX + "px");
+          root.style.setProperty("--spSvgOffsetY", this.svgOffsetY + "px");
         }
       }
 
@@ -442,7 +456,7 @@ var view1 = new Vue({
           this.orientation = "portrait";
 
           if (this.isMobile) {
-            this.svgOffset = 0;
+            this.svgOffsetY = 0;
 
             this.screenWidth = screenWidthComputed;
             this.screenHeight = screenHeightComputed;
@@ -453,7 +467,7 @@ var view1 = new Vue({
           this.orientation = "landscape";
 
           if (this.isMobile) {
-            this.svgOffset = this.height - this.width;
+            this.svgOffsetY = this.height - this.width;
 
             this.screenWidth = screenHeightComputed;
             this.screenHeight = screenWidthComputed;
@@ -520,7 +534,10 @@ var view1 = new Vue({
         let j = Math.floor((n - (2 * longRow - 1) * k) / longRow);
         let row = 2 * k + j;
 
+        // decreasing variability
         let variability = this.variability - n * changeInVariability;
+
+        //this if statement makes the last few rows linear
         if (n > numPoints - 3 * longRow + 1) {
           variability = 0;
         }

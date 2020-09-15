@@ -410,8 +410,8 @@ var view1 = new Vue({
       let root = document.documentElement;
       this.svgOffsetX = (this.screenWidth - this.width) / 2;
       this.svgOffsetY = 0;
-      root.style.setProperty("--spSvgOffsetX", this.svgOffsetX + "px");
-      root.style.setProperty("--spSvgOffsetY", this.svgOffsetY + "px");
+      root.style.setProperty("--spSvgOffsetX", -this.svgOffsetX + "px");
+      root.style.setProperty("--spSvgOffsetY", -this.svgOffsetY + "px");
 
       // PORTRAIT
       if (this.height > this.width) {
@@ -424,8 +424,8 @@ var view1 = new Vue({
           // center svg
           this.svgOffsetX = (this.screenWidth - this.width) / 2;
           this.svgOffsetY = 0;
-          root.style.setProperty("--spSvgOffsetX", this.svgOffsetX + "px");
-          root.style.setProperty("--spSvgOffsetY", this.svgOffsetY + "px");
+          root.style.setProperty("--spSvgOffsetX", -this.svgOffsetX + "px");
+          root.style.setProperty("--spSvgOffsetY", -this.svgOffsetY + "px");
         }
       }
       // LANDSCAPE
@@ -438,8 +438,8 @@ var view1 = new Vue({
 
           this.svgOffsetX = 0;
           this.svgOffsetY = 0;
-          root.style.setProperty("--spSvgOffsetX", this.svgOffsetX + "px");
-          root.style.setProperty("--spSvgOffsetY", this.svgOffsetY + "px");
+          root.style.setProperty("--spSvgOffsetX", -this.svgOffsetX + "px");
+          root.style.setProperty("--spSvgOffsetY", -this.svgOffsetY + "px");
         }
       }
 
@@ -451,15 +451,25 @@ var view1 = new Vue({
         let screenHeightComputed = window.screen.availHeight;
         let screenWidthComputed = window.screen.availWidth;
 
+        let root = document.documentElement;
+        this.svgOffsetX = (this.screenWidth - this.width) / 2;
+        this.svgOffsetY = 0;
+        root.style.setProperty("--spSvgOffsetX", -this.svgOffsetX + "px");
+        root.style.setProperty("--spSvgOffsetY", -this.svgOffsetY + "px");
+
         // PORTRAIT
         if (this.height > this.width) {
           this.orientation = "portrait";
 
           if (this.isMobile) {
-            this.svgOffsetY = 0;
-
             this.screenWidth = screenWidthComputed;
             this.screenHeight = screenHeightComputed;
+
+            // center svg
+            this.svgOffsetX = (this.screenWidth - this.width) / 2;
+            this.svgOffsetY = 0;
+            root.style.setProperty("--spSvgOffsetX", -this.svgOffsetX + "px");
+            root.style.setProperty("--spSvgOffsetY", -this.svgOffsetY + "px");
           }
         }
         // LANDSCAPE
@@ -467,10 +477,13 @@ var view1 = new Vue({
           this.orientation = "landscape";
 
           if (this.isMobile) {
-            this.svgOffsetY = this.height - this.width;
+            this.screenWidth = screenWidthComputed;
+            this.screenHeight = screenHeightComputed;
 
-            this.screenWidth = screenHeightComputed;
-            this.screenHeight = screenWidthComputed;
+            this.svgOffsetX = 0;
+            this.svgOffsetY = 0;
+            root.style.setProperty("--spSvgOffsetX", -this.svgOffsetX + "px");
+            root.style.setProperty("--spSvgOffsetY", -this.svgOffsetY + "px");
           }
         }
       });

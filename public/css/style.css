@@ -4,6 +4,8 @@
   --transformOrigin: 0px;
   --triangleCenterX: 100px;
   --triangleCenterY: 100px;
+  --spSvgOffsetX: 0px;
+  --spSvgOffsetY: 0px;
 }
 
 body {
@@ -15,6 +17,7 @@ body {
   display: inline-block;
   position: fixed;
   pointer-events: none;
+  z-index: 10;
 }
 
 .block {
@@ -45,7 +48,7 @@ body {
 }
 
 .shortest-paths-svg-offset {
-  transform: translate(-(var(--spSvgOffsetX)), -(var(--spSvgOffsetY)));
+  transform: translate(var(--spSvgOffsetX), var(--spSvgOffsetY));
 }
 
 .pathEater {

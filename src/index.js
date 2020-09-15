@@ -362,6 +362,24 @@ var view1 = new Vue({
       })(navigator.userAgent || navigator.vendor || window.opera);
       return check;
     },
+    setScreenDimensions: function() {
+      console.log("setScreenDimensions()");
+      let screenHeightComputed = window.screen.availHeight;
+      let screenWidthComputed = window.screen.availWidth;
+      this.screenWidth = screenWidthComputed;
+      this.screenHeight = screenHeightComputed;
+
+      //Mobile solution
+      if (this.isMobile) {
+        if (screenHeightComputed > screenWidthComputed) {
+          this.screenWidth = screenHeightComputed;
+          this.screenHeight = screenHeightComputed;
+        } else {
+          this.screenHeight = screenHeightComputed;
+          this.screenWidth = screenWidthComputed;
+        }
+      }
+    },
     createResizeHandler: function() {
       let isMobile = this.mobileCheck();
       if (isMobile) {
@@ -429,24 +447,6 @@ var view1 = new Vue({
           }
         }
       });
-    },
-    setScreenDimensions: function() {
-      console.log("setScreenDimensions()");
-      let screenHeightComputed = window.screen.availHeight;
-      let screenWidthComputed = window.screen.availWidth;
-      this.screenWidth = screenWidthComputed;
-      this.screenHeight = screenHeightComputed;
-
-      // Mobile solution
-      // if (this.isMobile) {
-      //   if (screenHeightComputed > screenWidthComputed) {
-      //     this.screenWidth = screenHeightComputed;
-      //     this.screenHeight = screenHeightComputed;
-      //   } else {
-      //     this.screenHeight = screenHeightComputed;
-      //     this.screenWidth = screenWidthComputed;
-      //   }
-      // }
     },
     balanceRowsAndCols: function() {
       if (Math.abs(this.screenWidth - this.screenHeight) < Number.EPSILON) {
@@ -1032,8 +1032,8 @@ var view1 = new Vue({
     },
   },
   created: function() {
-    this.createResizeHandler();
     this.setScreenDimensions();
+    this.createResizeHandler();
     this.balanceRowsAndCols();
     this.createPoints(this.longRow, this.numRows);
     initDigraph(this.numPoints);

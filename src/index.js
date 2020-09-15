@@ -433,8 +433,8 @@ var view1 = new Vue({
         this.orientation = "landscape";
 
         if (this.isMobile) {
-          this.screenWidth = screenWidthComputed;
-          this.screenHeight = screenHeightComputed;
+          this.screenWidth = screenHeightComputed;
+          this.screenHeight = screenWidthComputed;
 
           this.svgOffsetX = 0;
           this.svgOffsetY = 0;
@@ -477,8 +477,8 @@ var view1 = new Vue({
           this.orientation = "landscape";
 
           if (this.isMobile) {
-            this.screenWidth = screenWidthComputed;
-            this.screenHeight = screenHeightComputed;
+            this.screenWidth = screenHeightComputed;
+            this.screenHeight = screenHWidthComputed;
 
             this.svgOffsetX = 0;
             this.svgOffsetY = 0;

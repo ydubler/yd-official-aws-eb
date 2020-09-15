@@ -366,6 +366,7 @@ var view1 = new Vue({
     },
     setMobileOrDesktop: function() {
       let isMobile = this.mobileCheck();
+      this.isMobile = isMobile;
       if (isMobile) {
         this.mobileOrDesktop = "mobile";
       } else {
@@ -409,7 +410,7 @@ var view1 = new Vue({
       if (this.height > this.width) {
         this.orientation = "portrait";
 
-        if (isMobile) {
+        if (this.isMobile) {
           this.svgOffset = 0;
 
           this.screenWidth = screenWidthComputed;
@@ -420,7 +421,7 @@ var view1 = new Vue({
       else {
         this.orientation = "landscape";
 
-        if (isMobile) {
+        if (this.isMobile) {
           this.svgOffset = this.height - this.width;
 
           this.screenWidth = screenWidthComputed;
@@ -440,7 +441,7 @@ var view1 = new Vue({
         if (this.height > this.width) {
           this.orientation = "portrait";
 
-          if (isMobile) {
+          if (this.isMobile) {
             this.svgOffset = 0;
 
             this.screenWidth = screenWidthComputed;
@@ -451,7 +452,7 @@ var view1 = new Vue({
         else {
           this.orientation = "landscape";
 
-          if (isMobile) {
+          if (this.isMobile) {
             this.svgOffset = this.height - this.width;
 
             this.screenWidth = screenHeightComputed;

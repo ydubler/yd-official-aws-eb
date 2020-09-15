@@ -527,7 +527,6 @@ var view1 = new Vue({
             root.style.setProperty("--spSvgOffsetY", -this.svgOffsetY + "px");
           }
         }
-
         // set intro-text font-size
         if (this.width < 700) {
           this.introText.fontSize = 40 + "px";
@@ -538,9 +537,9 @@ var view1 = new Vue({
               this.introText.text2MarginBottom = 4.5 * 40 + "px";
               this.introText.text1MarginBottom = 6 * 40 + "px";
             } else {
-              this.introText.text3MarginBottom = 40 + "px";
-              this.introText.text2MarginBottom = 2.5 * 40 + "px";
-              this.introText.text1MarginBottom = 4 * 40 + "px";
+              this.introText.text3MarginBottom = 1.5 * 40 + "px";
+              this.introText.text2MarginBottom = 3 * 40 + "px";
+              this.introText.text1MarginBottom = 4.5 * 40 + "px";
             }
           } else {
             this.introText.text3MarginBottom = 3 * 40 + "px";

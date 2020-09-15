@@ -130,35 +130,53 @@
                 v-if="pathEater.adjacent === true"
                 :cx="points[pathEater.point1].x"
                 :cy="points[pathEater.point1].y"
-                r="10"
-                stroke="black"
+                r="5"
+                fill="white"
+                stroke="#ffd700"
                 stroke-width="2"
               />
               <circle
                 v-if="pathEater.adjacent === true"
                 :cx="points[pathEater.point2].x"
                 :cy="points[pathEater.point2].y"
-                r="15"
-                stroke="black"
+                r="5"
+                fill="white"
+                stroke="#ffd700"
                 stroke-width="2"
               />
               <circle
                 v-if="pathEater.adjacent === true"
                 :cx="points[pathEater.point3].x"
                 :cy="points[pathEater.point3].y"
-                r="15"
-                stroke="black"
+                r="5"
+                fill="white"
+                stroke="#ffd700"
                 stroke-width="2"
               />
             </g>
 
             <polygon
               v-if="mouseOnTriangle===true && pathEater.adjacent === true"
-              v-bind:class="{ pathEaterTriangleBumping: pathEater.adjacent}"
+              class="pathEaterTriangleBumping"
               :points="mouseTrianglePoints"
               fill="#ffd700"
               pointer-events="none"
             ></polygon>
+
+            <line
+              v-if="mouseOnTriangle===true && pathEater.adjacent === true"
+              v-for="line in mouseTriangleLines"
+              class="pathEaterTriangleBumping"
+              :x1="line.x1"
+              :y1="line.y1"
+              :x2="line.x2"
+              :y2="line.y2"
+              stroke="#fff09a"
+              stroke-width="2"
+              pointer-events="none"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></line>
 
             <circle
               v-if="pathEater.adjacent === false"

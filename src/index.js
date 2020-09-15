@@ -889,7 +889,7 @@ var view1 = new Vue({
     mouseEnterTriangle: function(triangle) {
       this.triangleMouseIn = triangle;
 
-      this.triangles[triangle].color = "#171717";
+      this.triangles[triangle].color = "black";
 
       // get nearest point to cursor
       let point1 = this.triangles[triangle].point1;

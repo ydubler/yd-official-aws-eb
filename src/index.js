@@ -794,7 +794,7 @@ var view1 = new Vue({
 
           triangles.push({
             id: curTriangle++,
-            color: "#1e1e1e",
+            color: "#131313",
             point1: n,
             point2: downOne,
             point3: downTwo,
@@ -825,7 +825,7 @@ var view1 = new Vue({
 
           triangles.push({
             id: curTriangle++,
-            color: "#1e1e1e",
+            color: "#131313",
             point1: n,
             point2: right,
             point3: downTwo,
@@ -950,7 +950,7 @@ var view1 = new Vue({
       this.createShortestPathsTree();
 
       //this.triangles[triangle].color = "#1b2a3a";
-      setTimeout(() => (this.triangles[triangle].color = "#1e1e1e"), 200);
+      setTimeout(() => (this.triangles[triangle].color = "#131313"), 200);
     },
     mouseLeaveTriangle: function(triangle) {
       //this.triangles[triangle].color = "#1e1e1e";

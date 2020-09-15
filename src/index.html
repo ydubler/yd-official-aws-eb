@@ -19,7 +19,7 @@
       class="block color-1e shortest-paths"
       v-bind:style="{ height: screenHeight+'px'}"
     >
-      <div class="debug">
+      <!-- <div class="debug">
         Desktop/Mobile: {{mobileOrDesktop}}<br />
         Orientation: {{orientation}}<br />
         Resize() Called:{{resizecalled}}<br />
@@ -29,7 +29,7 @@
         innerHeight: {{ height}}<br />
         width: {{ screenWidth }}<br />
         height: {{ screenHeight}}<br />
-      </div>
+      </div> -->
       <div class="navbar">
         <div class="navbar-link inline-block">
           Resume
@@ -72,7 +72,7 @@
               :y1="line.y1"
               :x2="line.x2"
               :y2="line.y2"
-              stroke="#161616"
+              stroke="#1e1e1e"
               stroke-width="2"
               pointer-events="none"
             />
@@ -94,9 +94,9 @@
               v-for="point in points"
               :cx="point.x"
               :cy="point.y"
-              r="9"
-              fill="#161616"
-              stroke="black"
+              r="5"
+              fill="black"
+              stroke="darkgray"
               stroke-width="1"
             />
 

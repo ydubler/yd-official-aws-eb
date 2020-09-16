@@ -198,14 +198,13 @@ body {
   text-align: center;
   width: 100%;
   position: fixed;
-  z-index: 1;
+  z-index: 2;
   color: white;
   background-color: #111111;
   pointer-events: none;
 }
 
 .navbar-link {
-  padding-top: 20px;
   padding-bottom: 20px;
   margin-left: 5%;
   margin-right: 5%;

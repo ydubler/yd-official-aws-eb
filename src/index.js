@@ -1,5 +1,3 @@
-const name = "#view-one";
-
 /*
 Dijkstra's Shortest Path Algorithm
 1) Choose a source point.
@@ -340,7 +338,7 @@ function relax(edge) {
 }
 
 var view1 = new Vue({
-  el: name,
+  el: "#view-one",
   data: {
     // DESKTOP OR MOBILE
     isMobile: false,
@@ -756,6 +754,7 @@ var view1 = new Vue({
             y2: y2,
           });
 
+          // insert into EWCD
           EdgeWeightedCyclicDigraph[n].push({
             from: n,
             to: upLeft,
@@ -775,6 +774,7 @@ var view1 = new Vue({
             y2: y2,
           });
 
+          // insert into EWCD
           EdgeWeightedCyclicDigraph[n].push({
             from: n,
             to: upRight,
@@ -794,6 +794,7 @@ var view1 = new Vue({
             y2: y2,
           });
 
+          // insert into EWCD
           EdgeWeightedCyclicDigraph[n].push({
             from: n,
             to: left,
@@ -813,6 +814,7 @@ var view1 = new Vue({
             y2: y2,
           });
 
+          // insert into EWCD
           EdgeWeightedCyclicDigraph[n].push({
             from: n,
             to: right,
@@ -835,6 +837,7 @@ var view1 = new Vue({
             y2: y2,
           });
 
+          // insert into EWCD
           EdgeWeightedCyclicDigraph[n].push({
             from: n,
             to: downLeft,
@@ -857,6 +860,7 @@ var view1 = new Vue({
             y2: y2,
           });
 
+          // insert into EWCD
           EdgeWeightedCyclicDigraph[n].push({
             from: n,
             to: downRight,

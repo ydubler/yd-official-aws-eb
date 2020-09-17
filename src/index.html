@@ -1,26 +1,22 @@
 <!DOCTYPE html>
 
 <html>
-  <head>
-    <title>Yuri Dubler Official</title>
-    <meta name="charset" content="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="author" content="Yuri Dubler" />
-    <meta name="description" content="Yuri Dubler Official" />
-    <link rel="stylesheet" type="text/css" href="../public/css/style.css" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Lato&family=Poppins&family=Ranchers&family=Sonsie+One&display=swap"
-      rel="stylesheet"
-    />
-  </head>
 
-  <body>
-    <div
-      id="view-one"
-      class="block color-1e shortest-paths"
-      v-bind:style="{ height: screenHeight+'px'}"
-    >
-      <!-- <div class="debug">
+<head>
+  <title>Yuri Dubler Official</title>
+  <meta name="charset" content="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="author" content="Yuri Dubler" />
+  <meta name="description" content="Yuri Dubler Official" />
+  <link rel="stylesheet" type="text/css" href="../public/css/style.css" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Lato&family=Poppins&family=Ranchers&family=Sonsie+One&display=swap"
+    rel="stylesheet" />
+</head>
+
+<body>
+  <div id="view-one" class="block color-1e shortest-paths" v-bind:style="{ height: screenHeight+'px'}">
+    <!-- <div class="debug">
         Desktop/Mobile: {{mobileOrDesktop}}<br />
         Orientation: {{orientation}}<br />
         Resize() Called:{{resizecalled}}<br />
@@ -31,98 +27,53 @@
         width: {{ screenWidth }}<br />
         height: {{ screenHeight}}<br />
       </div> -->
-      <div id="navbar" class="navbar">
-        <div v-bind:style="{ color: 'red'}">
-          This website is under construction.
-        </div>
-        <br />
-        <div class="navbar-link inline-block">
-          Resume
-        </div>
-        <div class="navbar-link inline-block">Portfolio</div>
-        <div class="navbar-link inline-block">
-          Search(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)
-        </div>
+    <div id="navbar" class="navbar">
+      <div v-bind:style="{ color: 'red'}">
+        This website is under construction.
       </div>
-
-      <div
-        id="view1-intro-text"
-        class="intro-text"
-        v-bind:style="{ height: screenHeight + 'px'}"
-      >
-        <div
-          class="intro-text-1 font-Lato"
-          v-bind:style="{ fontSize: introText.fontSize, marginBottom: introText.text1MarginBottom }"
-        >
-          Software Engineer.
-        </div>
-        <div
-          class="intro-text-2 font-Lato"
-          v-bind:style="{ fontSize: introText.fontSize, marginBottom: introText.text2MarginBottom }"
-        >
-          Web Developer.
-        </div>
-        <div
-          class="intro-text-3"
-          v-bind:style="{ fontSize: introText.fontSize, marginBottom: introText.text3MarginBottom }"
-        >
-          Code Paladin.
-        </div>
+      <br />
+      <div class="navbar-link inline-block">
+        Resume
       </div>
-      <div class="shortest-paths" v-bind:style="{ height: screenHeight + 'px'}">
-        <svg
-          version="1.1"
-          baseProfile="full"
-          xmlns="http://www.w3.org/2000/svg"
-          v-bind:style="{ height: screenHeight + 'px'}"
-          width="100%"
-        >
-          <g class="shortest-paths-svg-offset">
-            <polygon
-              v-for="triangle in triangles"
-              v-on:click="mouseEnterTriangle(triangle.id)"
-              :points="triangle.points"
-              :fill="triangle.color"
-              @mouseenter="mouseEnterTriangle(triangle.id)"
-              @mouseleave="mouseLeaveTriangle(triangle.id)"
-            ></polygon>
+      <div class="navbar-link inline-block">Portfolio</div>
+      <div class="navbar-link inline-block">
+        Search(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)
+      </div>
+    </div>
 
-            <line
-              v-for="line in lines"
-              :x1="line.x1"
-              :y1="line.y1"
-              :x2="line.x2"
-              :y2="line.y2"
-              stroke="#191919"
-              stroke-width="3"
-              pointer-events="none"
-            />
+    <div id="view1-intro-text" class="intro-text" v-bind:style="{ height: screenHeight + 'px'}">
+      <div class="intro-text-1 font-Lato"
+        v-bind:style="{ fontSize: introText.fontSize, marginBottom: introText.text1MarginBottom }">
+        Software Engineer.
+      </div>
+      <div class="intro-text-2 font-Lato"
+        v-bind:style="{ fontSize: introText.fontSize, marginBottom: introText.text2MarginBottom }">
+        Web Developer.
+      </div>
+      <div class="intro-text-3"
+        v-bind:style="{ fontSize: introText.fontSize, marginBottom: introText.text3MarginBottom }">
+        Code Paladin.
+      </div>
+    </div>
+    <div class="shortest-paths" v-bind:style="{ height: screenHeight + 'px'}">
+      <svg version="1.1" baseProfile="full" xmlns="http://www.w3.org/2000/svg"
+        v-bind:style="{ height: screenHeight + 'px'}" width="100%">
+        <g class="shortest-paths-svg-offset">
+          <polygon v-for="triangle in triangles" v-on:click="mouseEnterTriangle(triangle.id)" :points="triangle.points"
+            :fill="triangle.color" @mouseenter="mouseEnterTriangle(triangle.id)"
+            @mouseleave="mouseLeaveTriangle(triangle.id)"></polygon>
 
-            <line
-              v-if="mouseOnTriangle===true"
-              v-for="line in mouseTriangleLines"
-              :x1="line.x1"
-              :y1="line.y1"
-              :x2="line.x2"
-              :y2="line.y2"
-              stroke="#ff008a"
-              stroke-width="5"
-              pointer-events="none"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            ></line>
+          <line v-for="line in lines" :x1="line.x1" :y1="line.y1" :x2="line.x2" :y2="line.y2" stroke="#191919"
+            stroke-width="3" pointer-events="none" />
 
-            <circle
-              v-for="point in points"
-              :cx="point.x"
-              :cy="point.y"
-              r="3"
-              fill="white"
-              stroke="#111111"
-              stroke-width="3"
-            />
+          <line v-if="mouseOnTriangle===true" v-for="line in mouseTriangleLines" :x1="line.x1" :y1="line.y1"
+            :x2="line.x2" :y2="line.y2" stroke="#ff008a" stroke-width="5" pointer-events="none" stroke-linecap="round"
+            stroke-linejoin="round"></line>
 
-            <!-- <line
+          <circle v-for="point in points" :cx="point.x" :cy="point.y" r="3" fill="white" stroke="#111111"
+            stroke-width="3" />
+
+          <!-- <line
               v-for="path in pathLines"
               :x1="path.x1"
               :y1="path.y1"
@@ -147,107 +98,43 @@
               stroke-linejoin="round"
             /> -->
 
-            <line
-              v-for="path in pathLines"
-              :x1="path.x1"
-              :y1="path.y1"
-              :x2="path.x2"
-              :y2="path.y2"
-              stroke="white"
-              stroke-width="2"
-              pointer-events="none"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
+          <line v-for="path in pathLines" :x1="path.x1" :y1="path.y1" :x2="path.x2" :y2="path.y2" stroke="white"
+            stroke-width="2" pointer-events="none" stroke-linecap="round" stroke-linejoin="round" />
 
-            <g class="pathEaterPointsBumping">
-              <circle
-                v-if="pathEater.adjacent === true"
-                :cx="points[pathEater.point1].x"
-                :cy="points[pathEater.point1].y"
-                r="5"
-                fill="white"
-                stroke="#ffd700"
-                stroke-width="2"
-              />
-              <circle
-                v-if="pathEater.adjacent === true"
-                :cx="points[pathEater.point2].x"
-                :cy="points[pathEater.point2].y"
-                r="5"
-                fill="white"
-                stroke="#ffd700"
-                stroke-width="2"
-              />
-              <circle
-                v-if="pathEater.adjacent === true"
-                :cx="points[pathEater.point3].x"
-                :cy="points[pathEater.point3].y"
-                r="5"
-                fill="white"
-                stroke="#ffd700"
-                stroke-width="2"
-              />
-            </g>
-
-            <polygon
-              v-if="mouseOnTriangle===true && pathEater.adjacent === true"
-              class="pathEaterTriangleBumping"
-              :points="mouseTrianglePoints"
-              fill="#ffd700"
-              pointer-events="none"
-            ></polygon>
-
-            <line
-              v-if="mouseOnTriangle===true && pathEater.adjacent === true"
-              v-for="line in mouseTriangleLines"
-              class="pathEaterTriangleBumping"
-              :x1="line.x1"
-              :y1="line.y1"
-              :x2="line.x2"
-              :y2="line.y2"
-              stroke="#fff09a"
-              stroke-width="2"
-              pointer-events="none"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            ></line>
-
-            <circle
-              v-if="pathEater.adjacent === false"
-              id="pathEaterMoving"
-              v-bind:class="{ pathEater: pathEater.moving }"
-              :cx="pathEater.x"
-              :cy="pathEater.y"
-              :fill="pathEater.color"
-              r="8"
-              stroke="white"
-              stroke-width="2px"
-              pointer-events="none"
-            ></circle>
-
-            <circle
-              v-if="pathEater.adjacent === true"
-              class="pathEaterBumping"
-              :cx="pathEater.x"
-              :cy="pathEater.y"
-              :fill="pathEater.color"
-              r="10"
-              stroke="black"
-              stroke-width="2"
-              pointer-events="none"
-            ></circle>
+          <g class="pathEaterPointsBumping">
+            <circle v-if="pathEater.adjacent === true" :cx="points[pathEater.point1].x" :cy="points[pathEater.point1].y"
+              r="5" fill="white" stroke="#ffd700" stroke-width="2" />
+            <circle v-if="pathEater.adjacent === true" :cx="points[pathEater.point2].x" :cy="points[pathEater.point2].y"
+              r="5" fill="white" stroke="#ffd700" stroke-width="2" />
+            <circle v-if="pathEater.adjacent === true" :cx="points[pathEater.point3].x" :cy="points[pathEater.point3].y"
+              r="5" fill="white" stroke="#ffd700" stroke-width="2" />
           </g>
-        </svg>
-      </div>
-    </div>
-    <!-- <div class="div2"></div> -->
 
-    <!-- <div id="view-two">
+          <polygon v-if="mouseOnTriangle===true && pathEater.adjacent === true" class="pathEaterTriangleBumping"
+            :points="mouseTrianglePoints" fill="#ffd700" pointer-events="none"></polygon>
+
+          <line v-if="mouseOnTriangle===true && pathEater.adjacent === true" v-for="line in mouseTriangleLines"
+            class="pathEaterTriangleBumping" :x1="line.x1" :y1="line.y1" :x2="line.x2" :y2="line.y2" stroke="#fff09a"
+            stroke-width="2" pointer-events="none" stroke-linecap="round" stroke-linejoin="round"></line>
+
+          <circle v-if="pathEater.adjacent === false" id="pathEaterMoving"
+            v-bind:class="{ pathEater: pathEater.moving }" :cx="pathEater.x" :cy="pathEater.y" :fill="pathEater.color"
+            r="8" stroke="white" stroke-width="2px" pointer-events="none"></circle>
+
+          <circle v-if="pathEater.adjacent === true" class="pathEaterBumping" :cx="pathEater.x" :cy="pathEater.y"
+            :fill="pathEater.color" r="10" stroke="black" stroke-width="2" pointer-events="none"></circle>
+        </g>
+      </svg>
+    </div>
+  </div>
+  <!-- <div class="div2"></div> -->
+
+  <!-- <div id="view-two">
       {{ appName }}
     </div> -->
 
-    <script type="text/javascript" src="https://unpkg.com/vue"></script>
-    <script type="text/javascript" src="../dist/main.js"></script>
-  </body>
+  <script type="text/javascript" src="https://unpkg.com/vue"></script>
+  <script type="text/javascript" src="../dist/main.js"></script>
+</body>
+
 </html>

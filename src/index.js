@@ -1,64 +1,98 @@
 const name = "#view-one";
 
-// Edged Weighted Digraph Structures
-let numPointsInGraph = 0;
-let digraph; // stores an edges array for every index
-let minHeapPQ = []; // used to find the smallest edge (stores point/dist)
-let pqInsertIndex = 0;
-let pointIndexInPQ = []; // stores the index of a point in the minHeapPQ
-let distTo = []; // stores every points distance from the source point
-let edgeTo = []; // stores the shortest paths edge from the source point
+/*
+Dijkstra's Shortest Path Algorithm
+1) Choose a source point.
+2) Add all edges leading out from the source point and add them to the MinPQ.
+    *The minimum edge will always be accesible in log(n) time by floating to the top of the minPQ (critical to efficiency)
+3) Update the distTo[] array 
+4) 
+*/
 
+// EDGE WEIGHTED CYCLIC DIGRAPH
+// Every entry in this array is a pointer to an array of edges
+// An edge is this object: {from: pointID, to: pointID, weight: distanceBetweenFromAndTo}
+let EdgeWeightedCyclicDigraph;
+let numPointsInGraph = 0; // the number of points in the graph
+
+// MINIMUM PRIORITY QUEUE
+// The minPQ is a critical feature of Dijkstra's Shortest Path algorithm.
+// The minPQ allows us to have access to the minimum edge (shortest edge) in ~log(n) time versus n time.
+// The minPQ is a binary heap stored in an array where children are entries 2k and 2k+1.
+// Every node in the minPQ is smaller than its child nodes and this is ensured by the sink() and swim() functions.
+// The minPQ starts at entry 1 (not 0) to ensure children the mathematics.
+// The minimum always floats to the top of the binary heap in log(n) time using the swim/sink functions.
+// The pointIndexInPQ stores every points index in the minPQ so that it can be updated when it changes in constant time.
+let minPQ; // the minHeap itself, an array which contains { point: pointID, weight: edgeDistance }
+let pqInsertIndex = 0; // insertion index into the minHeapPQ
+let pointIndexInPQ; // stores every points position in the minPQ so a points edge weight can be updated in constant time
+
+// DISTANCE TO & EDGE TO ARRAYS
+// The distTo[n] array stores the distance to from the source point to point n.
+// The edgeTo[] array is
+// The edgeTo[n] array stores the shortest path edges ({ point: pointID, weight: edgeDistance }) relative to a source point.
+// To find the shortest path from a source point to point n, follow the edges starting at edgeTo[n].
+let distTo;
+let edgeTo;
+
+// Initializes all of the data structures based on a number of points.
 function initDigraph(numPoints) {
   console.log("initDigraph();");
   numPointsInGraph = numPoints;
   pointIndexInPQ = new Array(numPoints);
-  minHeapPQ = new Array(numPoints + 1); // heap positions start at index 1
+  minPQ = new Array(numPoints + 1); // heap positions start at index 1
   distTo = new Array(numPoints);
   edgeTo = new Array(numPoints);
-  digraph = new Array(numPoints);
+  EdgeWeightedCyclicDigraph = new Array(numPoints);
 
   // populate digraph with subarrays (to push edges)
   for (let n = 0; n < numPoints; n++) {
-    digraph[n] = [];
-    pointIndexInPQ[n] = null;
-    distTo[n] = Infinity;
-    edgeTo[n] = null;
-    minHeapPQ[n] = { point: -1, weight: Infinity };
+    EdgeWeightedCyclicDigraph[n] = []; // every entry into the array points to a subarray
+    pointIndexInPQ[n] = null; // no points exist in the minPQ at the beginning
+    distTo[n] = Infinity; // all distances start at infinity
+    edgeTo[n] = null; // no edges exist at the beginning
+    minPQ[n] = { point: -1, weight: Infinity }; // no edges exist in minPQ at the beginning
   }
 }
 
+// Returns true if the minPQ is empty and false if it contains at least one { point: pointID, weight: edgeDistance }
 function pqIsEmpty() {
   //console.log("pqIsEmpty()");
   if (pqInsertIndex === 0) return true;
   return false;
 }
 
-function pqContains(point) {
+// Returns true if the minPQ contains a point identified by its pointID
+function pqContains(pointID) {
   //console.log("pqContains()");
-  pqValidateIndex(point);
-  if (pointIndexInPQ[point] != null) {
+  pqValidateIndex(pointID);
+  if (pointIndexInPQ[pointID] != null) {
     //console.log("pqContains() -> point " + point + " is IN the minPQ!");
     return true;
   }
   return false;
 }
 
-function pqValidateIndex(point) {
+// Throws an error if a pointID is invalid (negative or greater than the number of points that exist)
+// This check might be unneccesary but safety first.
+function pqValidateIndex(pointID) {
   //console.log("pqValidate()");
-  if (point < 0) throw new IllegalArgumentException("index is negative: " + i);
-  let x = 1;
-  if (point >= numPointsInGraph)
+  if (pointID < 0)
+    throw new IllegalArgumentException("index is negative: " + i);
+  if (pointID >= numPointsInGraph)
     throw new IllegalArgumentException("index >= capacity: " + i);
 }
 
+// This function exchange two points (k and j) in the minPQ.
+// It swaps minPQ[k] with minPQ[j] , recalling that minPQ[k] = { point: k, weight: distanceOfAnEdgeLeadingToPointK }.
+// This function is called whenever a point sinks or swims (when the pqSink() or pqSwim() functions are successful)
 function pqExch(k, j) {
   //console.log("pqExch()");
-  let kPoint = minHeapPQ[k].point;
-  let jPoint = minHeapPQ[j].point;
+  let kPoint = minPQ[k].point;
+  let jPoint = minPQ[j].point;
 
   if (!pqContains(kPoint) || !pqContains(jPoint)) {
-    console.log(minHeapPQ);
+    console.log(minPQ);
     console.log(pointIndexInPQ);
     console.log(distTo);
     console.log(
@@ -69,40 +103,55 @@ function pqExch(k, j) {
     throw new IllegalArgumentException("one or both swap points don't exist !");
   }
 
+  // Get each points index in the minPQ (constant time)
   pointIndexInPQ[kPoint] = j;
   pointIndexInPQ[jPoint] = k;
 
   //console.log("setting pointIndexInPQ[ " + kPoint + " ] to " + j);
   //console.log("setting pointIndexInPQ[ " + jPoint + " ] to " + k);
 
-  let swap = { point: minHeapPQ[j].point, weight: minHeapPQ[j].weight };
-  minHeapPQ[j] = { point: minHeapPQ[k].point, weight: minHeapPQ[k].weight };
-  minHeapPQ[k] = swap;
+  // Swap both points
+  let swap = { point: minPQ[j].point, weight: minPQ[j].weight };
+  minPQ[j] = { point: minPQ[k].point, weight: minPQ[k].weight };
+  minPQ[k] = swap;
 }
 
-// k is an index in PQ
+// This function sinks (downward) whatever { pointID: point, weight: edgeDistance } is located at index k in the minPQ
+// Node k will swap with the smaller of both of its child nodes (2k and 2k+1), ensuring parent nodes are smaller than their child nodes
+// Node k will sink until both of its children are larger than it
 function pqSink(k) {
   //console.log("pqSink()");
+  // Sink node k until both children are larger than it
   while (2 * k <= numPointsInGraph && 2 * k <= pqInsertIndex) {
-    let j = 2 * k;
+    // Select k's first child
+    let firstChild = 2 * k;
 
-    if (j < numPointsInGraph && pqLess(j + 1, j)) {
-      j++; // choose smaller child
+    // If other child is valid, compare both children to determine the smaller of them
+    if (firstChild + 1 <= numPointsInGraph && firstChild + 1 <= pqInsertIndex) {
+      // Choose the smaller of the two children
+      if (pqLess(firstChild + 1, firstChild)) {
+        firstChild++; // Change smaller child from 2k to 2k + 1
+      }
     }
 
-    if (!pqLess(j, k)) {
+    // Ensure the smaller child is actually smaller than k
+    if (!pqLess(firstChild, k)) {
       break;
     }
 
-    pqExch(k, j);
-    k = j;
+    // Exchange node k with its smaller child
+    pqExch(k, firstChild);
+
+    // Set k to its new index in the minPQ and check to see if it should sink again (while loop conditional)
+    k = firstChild;
   }
 }
 
-// k is an index in PQ
+// This function swims (upward) whatever { pointID: point, weight: edgeDistance } is located at index k in the minPQ
+// Node k will swap with it's parent IFF it's parent is larger than node k until it reaches a parent that is smaller
 function pqSwim(k) {
   //console.log("pqSwim()");
-  // get the parent index
+  // Get the parent index
   let parent = 0;
   if (k === 3) {
     parent = 1;
@@ -112,9 +161,9 @@ function pqSwim(k) {
     parent = Math.floor(k / 2);
   }
 
+  // Swim node K until its parent is smaller
   while (k > 1 && pqLess(k, parent)) {
-    //console.log("swim going from " + k + " to " + parent);
-
+    // Get the parent index
     if (k === 3) {
       parent = 1;
     } else if (k % 2 === 0) {
@@ -123,164 +172,169 @@ function pqSwim(k) {
       parent = Math.floor(k / 2);
     }
 
+    // Exchange node k with its parent
     pqExch(k, parent);
+
+    // Set k to its new index in the minPQ and check to see if it should swim again (while loop conditional)
     k = parent;
   }
 }
 
-function pqDecreaseWeightOfPoint(point, weight) {
+// This function decreases the weight of a points edge in the minPQ.
+// The point is identified by its pointID.
+function pqDecreaseWeightOfPoint(pointID, weight) {
   //console.log("pqDecreaseWeightOfPoint()");
-  pqValidateIndex(point);
+  // Validate the pointID (only admit points that are non-negative and less than number of points)
+  pqValidateIndex(pointID);
 
-  if (!pqContains(point)) {
+  // Ensure the minPQ containts the point
+  if (!pqContains(pointID)) {
     throw new NoSuchElementException("index is not in the priority queue");
   }
 
-  // console.log(
-  //   "weight " + minHeapPQ[pointIndexInPQ[point]].weight + " -> " + weight
-  // );
-
-  if (minHeapPQ[pointIndexInPQ[point]].weight < weight) {
-    console.log("MINHEAPPQ[]");
-    console.log(minHeapPQ);
-    console.log("DISTTO[]");
-    console.log(distTo);
-    console.log("pointIndexInP[]");
-    console.log(pointIndexInPQ);
-    console.log(
-      "point " + point + " has index " + pointIndexInPQ[point] + "in MinHeapPQ"
-    );
-    console.log("distTo[" + point + "]=" + distTo[point]);
-    console.log(
-      "minHeapPQ[indexInPQ[" +
-        point +
-        "]].weight =" +
-        minHeapPQ[pointIndexInPQ[point]].weight
-    );
+  // Ensure the existing weight is actually less than the new weight
+  if (minPQ[pointIndexInPQ[pointID]].weight < weight) {
     throw new IllegalArgumentException(
       "Calling pqDecreaseWeightOfPoint() with a key strictly greater than the key in the priority queue"
     );
   }
 
-  minHeapPQ[pointIndexInPQ[point]].weight = weight;
-  pqSwim(pointIndexInPQ[point]);
+  // Decrease the weight of the point's edge in the minPQ
+  minPQ[pointIndexInPQ[pointID]].weight = weight;
+
+  // Swim the point because it's weight just decreased
+  pqSwim(pointIndexInPQ[pointID]);
 }
 
-// k is a weight value in PQ
+// This function checks to see if the weight of entry k in the minPQ is less than the weight of entry j in the minPQ.
 function pqLess(k, j) {
   //console.log("pqLess()");
-  //console.log(k + " weight=" + minHeapPQ[k].weight);
-  //console.log(j + " weight=" + minHeapPQ[k].weight);
 
-  if (minHeapPQ[k].weight === undefined || minHeapPQ[j].weight === undefined) {
+  // Ensure both weights exist
+  if (minPQ[k].weight === undefined || minPQ[j].weight === undefined) {
     return false;
   }
 
-  if (minHeapPQ[k].weight < minHeapPQ[j].weight) {
+  // Return true if the weight of entry k is less than the weight of entry j
+  if (minPQ[k].weight < minPQ[j].weight) {
     return true;
   }
 
+  // Return false in every other case
   return false;
 }
 
+// This function does two things:
+// 1) It removes the minimum-weight point-edge from the minPQ (minPQ[1]) and ensures the minPQ adjusts to be valid
+// 2) It returns the pointID associated with the minimum-weight point-edge object { point: pointID, weight: edgeDistance }
 function pqDeleteMin() {
   //console.log("pqDeleteMin()");
+  // Ensure the minPQ actually contains a minimum value
   if (pqInsertIndex === 0) {
     throw new NoSuchElementException("Priority queue underflow");
   }
 
-  let point = minHeapPQ[1].point;
-  pointIndexInPQ[point] = null;
-  //console.log("REMOVING pointIndexInPQ[ " + point + " ] to NULL");
+  // Get the minimum value and remove it from the index tracking array
+  let pointID = minPQ[1].point;
+  pointIndexInPQ[pointID] = null;
 
-  minHeapPQ[1] = {
-    point: minHeapPQ[pqInsertIndex].point,
-    weight: minHeapPQ[pqInsertIndex].weight,
+  // Set the minPQ's first index to whatever the last inserted entry
+  // (The minPQ decreased in size by one which is why we are targeting the last entry)
+  minPQ[1] = {
+    point: minPQ[pqInsertIndex].point,
+    weight: minPQ[pqInsertIndex].weight,
   };
 
-  pointIndexInPQ[minHeapPQ[pqInsertIndex].point] = 1;
+  // Set the new last entry's index in the index-tracking array to 1
+  // (The last entry is now occupying the first index of the minPQ -- this must be tracked!)
+  pointIndexInPQ[minPQ[pqInsertIndex].point] = 1;
+
+  // Decrement the insertion index (the minPQ just decreased in size by 1)
   pqInsertIndex--;
+
+  // Sink the first entry in the minPQ (which just was the last entry in the minPQ)
   pqSink(1);
 
-  return point;
+  // Return the pointID of the point-edge removed from the minPQ
+  return pointID;
 }
 
-function pqInsert(point, weight) {
+// This function inserts a point-edge into the minPQ at the pqInsertIndex and swims it
+function pqInsert(pointID, weight) {
   //console.log("pqInsert()");
-  pqValidateIndex(point);
+  // Validate the pointID (only admit points that are non-negative and less than number of points)
+  pqValidateIndex(pointID);
 
-  if (pqContains(point)) {
+  // Ensure the minPQ contains the point
+  if (pqContains(pointID)) {
     throw new IllegalArgumentException(
       "index is already in the priority queue"
     );
   }
 
+  // Increment the insertion index
   pqInsertIndex++;
-  pointIndexInPQ[point] = pqInsertIndex;
-  //console.log("setting pointIndexInPQ[ " + point + " ] to " + pqInsertIndex);
-  minHeapPQ[pqInsertIndex] = { point: point, weight: weight };
+
+  // Track the point's index in the index-tracking array
+  pointIndexInPQ[pointID] = pqInsertIndex;
+
+  // Add the point-edge to the minPQ
+  minPQ[pqInsertIndex] = { point: pointID, weight: weight };
+
+  // Swim the point because it might be smaller than its parent
   pqSwim(pqInsertIndex);
 }
 
-function relax(edge) {
-  //console.log("relax()");
-  let from = edge.from;
-  let to = edge.to;
-  let weight = edge.weight;
-  let originalDistance = distTo[to];
-  let newDistance = distTo[from] + weight;
+// This function creates the distTo[] and edgeTo[] arrays given a sourcePoint.
+// This function is Dijkstra's Shortest Paths algorithm.
+function findShortestPathDijkstra(sourcePoint) {
+  // Set the distance to the source point as 0.
+  distTo[sourcePoint] = 0;
 
-  // console.log(
-  //   "RELAXING EDGE: { from: " +
-  //     from +
-  //     " , to: " +
-  //     to +
-  //     " , weight: " +
-  //     weight +
-  //     " } with original distance of " +
-  //     originalDistance
-  // );
+  // Insert the source point into the minPQ
+  pqInsert(sourcePoint, 0.0);
 
-  if (originalDistance > newDistance) {
-    distTo[to] = newDistance;
-    edgeTo[to] = edge;
+  // While the minPQ has a minimum edge...
+  while (!pqIsEmpty()) {
+    // ...pop the minimum edge from the minPQ and set v as the point it is associated with
+    // Recall: pqDeleteMin returns the point property from the point-edge which looks like { point: pointID, weight: edgeDistance }
+    let v = pqDeleteMin();
 
-    if (pqContains(to)) {
-      // console.log(
-      //   "weight updating from " + originalDistance + " to " + newDistance
-      // );
-      pqDecreaseWeightOfPoint(to, newDistance);
-    } else {
-      pqInsert(to, newDistance);
+    // Relax every edge that originates from point v (looking at the edges in the EWCD)
+    for (let n = 0; n < EdgeWeightedCyclicDigraph[v].length; n++) {
+      // Relax the edge
+      relax(EdgeWeightedCyclicDigraph[v][n]);
     }
   }
 }
 
-function findShortestPathDijkstra(sourcePoint) {
-  //console.log(digraph);
+// This function updates the distTo[] and edgeTo[] arrays
+// This function is called inside the findShortestPathDijkstra(sourcePoint) function.
+function relax(edge) {
+  // Get the from, to, and distance from the edge
+  let from = edge.from; // point from which the edge is emitted
+  let to = edge.to; // point which the edge is going to
+  let weight = edge.weight; // the length of the edge
 
-  distTo[sourcePoint] = 0;
+  // Get the original distance from the source to distTo[to]
+  let originalDistance = distTo[to];
 
-  pqInsert(sourcePoint, 0.0);
-  //console.log(minHeapPQ);
-  while (!pqIsEmpty()) {
-    let v = pqDeleteMin();
-    //console.log(v + " popped off heapMinPQ");
-    for (let n = 0; n < digraph[v].length; n++) {
-      // console.log(
-      //   "relaxing digraph[" +
-      //     v +
-      //     "][" +
-      //     n +
-      //     "] = { from: " +
-      //     digraph[v][n].from +
-      //     " , to: " +
-      //     digraph[v][n].to +
-      //     " , weight: " +
-      //     digraph[v][n].weight
-      // );
-      // console.log(digraph[v][n]);
-      relax(digraph[v][n]);
+  // Get the new distance from the source to distTo[to]
+  let newDistance = distTo[from] + weight;
+
+  // If the new distance is shorter than the original distance...
+  if (originalDistance > newDistance) {
+    // ... update the distTo[] and edgeTo[] arrays
+    distTo[to] = newDistance;
+    edgeTo[to] = edge;
+
+    // If the minPQ contains the "to" point...
+    if (pqContains(to)) {
+      // ... decrease the weight of the "to" point in the minPQ with the new distance
+      pqDecreaseWeightOfPoint(to, newDistance);
+    } else {
+      // ... otherwise insert the "to" point at the end of the minPQ and swim it
+      pqInsert(to, newDistance);
     }
   }
 }
@@ -702,7 +756,7 @@ var view1 = new Vue({
             y2: y2,
           });
 
-          digraph[n].push({
+          EdgeWeightedCyclicDigraph[n].push({
             from: n,
             to: upLeft,
             weight: this.getDistance(x1, y1, x2, y2),
@@ -721,7 +775,7 @@ var view1 = new Vue({
             y2: y2,
           });
 
-          digraph[n].push({
+          EdgeWeightedCyclicDigraph[n].push({
             from: n,
             to: upRight,
             weight: this.getDistance(x1, y1, x2, y2),
@@ -740,7 +794,7 @@ var view1 = new Vue({
             y2: y2,
           });
 
-          digraph[n].push({
+          EdgeWeightedCyclicDigraph[n].push({
             from: n,
             to: left,
             weight: this.getDistance(x1, y1, x2, y2),
@@ -759,7 +813,7 @@ var view1 = new Vue({
             y2: y2,
           });
 
-          digraph[n].push({
+          EdgeWeightedCyclicDigraph[n].push({
             from: n,
             to: right,
             weight: this.getDistance(x1, y1, x2, y2),
@@ -781,7 +835,7 @@ var view1 = new Vue({
             y2: y2,
           });
 
-          digraph[n].push({
+          EdgeWeightedCyclicDigraph[n].push({
             from: n,
             to: downLeft,
             weight: this.getDistance(x1, y1, x2, y2),
@@ -803,7 +857,7 @@ var view1 = new Vue({
             y2: y2,
           });
 
-          digraph[n].push({
+          EdgeWeightedCyclicDigraph[n].push({
             from: n,
             to: downRight,
             weight: this.getDistance(x1, y1, x2, y2),
@@ -912,7 +966,7 @@ var view1 = new Vue({
         pointIndexInPQ[n] = null;
         distTo[n] = Infinity;
         edgeTo[n] = null;
-        minHeapPQ[n] = { point: -1, weight: Infinity };
+        minPQ[n] = { point: -1, weight: Infinity };
       }
 
       findShortestPathDijkstra(this.pathEater.from);

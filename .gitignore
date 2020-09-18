@@ -1,2 +1,9 @@
 /node_modules
+.gitignore
 /dist
+.elasticbeanstalk/
+rootkey.csv
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
